@@ -108,7 +108,7 @@
   header.top{margin-bottom:8px}
   .kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
   h1{font-size:clamp(24px,4vw,36px);line-height:1.15;margin:6px 0 8px;font-weight:700}
-  .lede{color:var(--ink2);max-width:70ch;font-size:15px}
+  .lede{color:var(--ink2);font-size:15px}
   .src-note{color:var(--muted);font-size:12.5px;margin-top:6px}
   .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:22px 0 4px}
   .filters .lbl{font-size:12.5px;color:var(--muted);font-weight:600;margin-right:2px}
@@ -121,7 +121,7 @@
   .btn:hover{border-color:var(--axis)}
   .btn.primary{background:var(--latam);color:#fff;border-color:var(--latam)}
   .prose h3{font-size:15px;font-weight:700;margin:16px 0 4px}
-  .prose p{font-size:13.5px;color:var(--ink2);margin:0 0 8px;max-width:78ch}
+  .prose p{font-size:13.5px;color:var(--ink2);margin:0 0 8px}
   .prose .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;
     text-transform:uppercase;color:var(--latam);background:color-mix(in srgb,var(--latam) 12%,transparent);
     border-radius:6px;padding:2px 8px;margin:2px 0}
@@ -138,6 +138,18 @@
   .acc-card.c-red{border-left-color:var(--peru);background:color-mix(in srgb,var(--peru) 6%,var(--surface))}
   .acc-card.c-indigo{border-left-color:#4a3aa7;background:color-mix(in srgb,#4a3aa7 6%,var(--surface))}
   .c-indigo .acc-tag{background:#4a3aa7}
+  .acc-card.c-fire{border-left-color:#ff6a00;border-left-width:5px;
+    background:linear-gradient(120deg,color-mix(in srgb,#ff6a00 10%,var(--surface)),var(--surface) 60%)}
+  .c-fire .acc-tag{background:#ff6a00}
+  .c-fire .acc-h{font-size:16px}
+  .fire-title{font-weight:800;background:linear-gradient(92deg,#ff3d00,#ff9e00,#ffcf00,#ff6a00,#ff3d00);
+    background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:fireflow 3.2s linear infinite, fireglow 1.5s ease-in-out infinite alternate}
+  @keyframes fireflow{to{background-position:220% 0}}
+  @keyframes fireglow{from{filter:drop-shadow(0 0 0 rgba(255,80,0,0))}to{filter:drop-shadow(0 1px 7px rgba(255,90,0,.6))}}
+  .c-fire .acc-ic{animation:fireflicker .28s infinite alternate;transform-origin:center bottom}
+  @keyframes fireflicker{from{transform:scale(1) rotate(-4deg);opacity:.85}to{transform:scale(1.14) rotate(4deg);opacity:1}}
+  @media (prefers-reduced-motion:reduce){.fire-title,.c-fire .acc-ic{animation:none}}
   .acc-h{width:100%;display:flex;align-items:center;gap:11px;background:transparent;border:none;cursor:pointer;
     font:inherit;font-size:15px;font-weight:700;color:var(--ink);padding:15px 16px;text-align:left}
   .acc-h .acc-ic{font-size:18px;line-height:1}
@@ -146,8 +158,11 @@
   .c-blue .acc-tag{background:var(--latam)} .c-purple .acc-tag{background:#8b3fa8}
   .c-green .acc-tag{background:var(--ref)} .c-amber .acc-tag{background:var(--warn);color:#3a2c00}
   .c-red .acc-tag{background:var(--peru)}
-  .acc-h .acc-x{margin-left:auto;color:var(--muted);font-size:13px;transition:transform .3s ease}
+  .acc-h .acc-x{margin-left:auto;color:var(--muted);font-size:22px;line-height:1;padding:0 4px;
+    transition:transform .4s cubic-bezier(.34,1.56,.64,1),color .2s}
+  .acc-h:hover .acc-x{color:var(--latam);transform:translateY(3px)}
   .acc-card.open .acc-h .acc-x{transform:rotate(180deg)}
+  .acc-card.open .acc-h:hover .acc-x{transform:rotate(180deg) translateY(-3px)}
   .acc-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
   .acc-card.open .acc-b{grid-template-rows:1fr}
   .acc-b>div{overflow:hidden;min-height:0}
@@ -162,7 +177,7 @@
   details.faq summary::-webkit-details-marker{display:none}
   details.faq summary::after{content:"+";color:var(--muted);font-weight:700;font-size:18px;flex:none}
   details.faq[open] summary::after{content:"–"}
-  details.faq .a{font-size:13.5px;color:var(--ink2);padding:0 2px 12px;max-width:80ch}
+  details.faq .a{font-size:13.5px;color:var(--ink2);padding:0 2px 12px}
   details.faq .a a{font-weight:600}
   details.faq .a ul{margin:8px 0 6px;padding-left:2px;list-style:none}
   details.faq .a li{margin:4px 0;display:flex;gap:8px;align-items:baseline}
@@ -193,7 +208,7 @@
   section.block{background:var(--surface);border:1px solid var(--border);border-radius:14px;
     padding:18px 18px 12px;margin:18px 0}
   section.block h2{font-size:18px;margin:0 0 2px;font-weight:700}
-  section.block .desc{color:var(--ink2);font-size:13.5px;margin:0 0 10px;max-width:75ch}
+  section.block .desc{color:var(--ink2);font-size:13.5px;margin:0 0 10px}
   .legend{display:flex;flex-wrap:wrap;gap:14px;margin:2px 0 8px;font-size:12.5px;color:var(--ink2)}
   .legend .it{display:inline-flex;align-items:center;gap:6px}
   .legend .dot{width:11px;height:11px;border-radius:50%}
@@ -225,7 +240,7 @@
   tr.is-peru td{background:color-mix(in srgb,var(--peru) 10%,transparent);font-weight:600}
   .note{font-size:12.5px;color:var(--ink2);background:color-mix(in srgb,var(--warn) 12%,transparent);
     border:1px solid var(--border);border-left:3px solid var(--warn);border-radius:8px;padding:10px 12px;margin-top:10px}
-  footer{color:var(--muted);font-size:12px;margin-top:26px;max-width:75ch}
+  footer{color:var(--muted);font-size:12px;margin-top:26px}
   a{color:var(--latam)}
   .hl{color:var(--peru);font-weight:700}
   .badge-col{font-size:11px;font-weight:700;color:#fff;background:var(--latam);padding:3px 9px;
@@ -322,6 +337,24 @@
       <button class="btn primary" id="dl-pdf">📄 Descargar análisis (PDF)</button>
     </div>
   </header>
+
+  <div class="acc" style="margin:18px 0 4px">
+    <div class="acc-card c-fire open">
+      <button class="acc-h" aria-expanded="true"><span class="acc-ic">🔥</span>
+        <span class="fire-title">El llamado: más ambición, más riesgo, más escala</span>
+        <span class="acc-tag">Manifiesto</span><span class="acc-x">▾</span></button>
+      <div class="acc-b"><div><div class="acc-in">
+        <p><b>Trabajar más horas no es la salida, ni recortar feriados.</b> El salto de productividad lo dan
+          los países que construyen <b>empresas de gran impacto</b>. Quienes tienen <b>acceso al capital</b>
+          — empresarios, inversionistas y el Estado — deben asumir <b>más pasión por el riesgo</b>: apostar por
+          <b>innovación</b> de productos y servicios, salir a <b>competir en el mercado internacional</b> y
+          construir el ecosistema que hoy no existe.</p>
+        <p>Sin grandes empresas ancla no hay proveedores de clase mundial, ni I+D, ni empleo formal de alta
+          productividad. La pregunta no es cuántas horas trabaja el Perú, sino <b>cuántas empresas de talla
+          global es capaz de crear</b>.</p>
+      </div></div></div>
+    </div>
+  </div>
 
   <div class="filters" role="group" aria-label="Filtro por grupo de países">
     <span class="lbl">Ver:</span>
@@ -762,6 +795,18 @@ const HOL_NOTE = "Perú tiene <b>16 feriados nacionales</b> (2025-2026) y el Gob
 let filter = "all";
 const fmt = n => n.toLocaleString("es-PE");
 const money = n => "$"+n.toLocaleString("es-PE");
+// escala "bonita" dinámica según los datos visibles
+function niceStep(span,target){
+  const raw=(span||1)/(target||5); const mag=Math.pow(10,Math.floor(Math.log10(raw)));
+  const n=raw/mag; const s=n<1.5?1:n<3?2:n<7?5:10; return s*mag;
+}
+function domainFor(lo,hi,target){
+  if(lo===hi){lo-=1;hi+=1;}
+  const step=niceStep(hi-lo,target);
+  const dlo=Math.floor(lo/step)*step, dhi=Math.ceil(hi/step)*step, ticks=[];
+  for(let v=dlo;v<=dhi+step*1e-3;v+=step)ticks.push(Math.round(v*1e6)/1e6);
+  return {lo:dlo,hi:dhi,ticks};
+}
 function visible(){
   if(filter==="all") return DATA;
   if(filter==="peruusa") return DATA.filter(d=>d.code==="PE"||d.code==="US");
@@ -808,15 +853,18 @@ function renderScatter(){
   const svg=document.getElementById("scatter");svg.innerHTML="";
   const W=720,H=460,m={t:20,r:24,b:52,l:60};
   const data=visible().filter(d=>d.hours!=null&&d.prod!=null);
-  const xmin=1300,xmax=2450, ymin=0,ymax=150;
+  if(!data.length)return;
+  const xd=domainFor(Math.min(...data.map(d=>d.hours)),Math.max(...data.map(d=>d.hours)),5);
+  const yd=domainFor(0,Math.max(...data.map(d=>d.prod))*1.08,5);
+  const xmin=xd.lo,xmax=xd.hi,ymin=yd.lo,ymax=yd.hi;
   const X=v=>m.l+(v-xmin)/(xmax-xmin)*(W-m.l-m.r);
   const Y=v=>H-m.b-(v-ymin)/(ymax-ymin)*(H-m.t-m.b);
   // grid + ticks
-  for(let gx=1400;gx<=2400;gx+=200){
+  for(const gx of xd.ticks){
     svg.appendChild(el("line",{x1:X(gx),y1:m.t,x2:X(gx),y2:H-m.b,class:"gl"}));
     const t=el("text",{x:X(gx),y:H-m.b+16,"text-anchor":"middle",class:"axis-t"});t.textContent=fmt(gx);svg.appendChild(t);
   }
-  for(let gy=0;gy<=150;gy+=25){
+  for(const gy of yd.ticks){
     svg.appendChild(el("line",{x1:m.l,y1:Y(gy),x2:W-m.r,y2:Y(gy),class:"gl"}));
     const t=el("text",{x:m.l-8,y:Y(gy)+4,"text-anchor":"end",class:"axis-t"});t.textContent="$"+gy;svg.appendChild(t);
   }
@@ -855,14 +903,17 @@ function renderBubble(){
   const svg=document.getElementById("bubble");if(!svg)return;svg.innerHTML="";
   const W=720,H=460,m={t:20,r:24,b:52,l:60};
   const data=visible().filter(d=>d.hours!=null&&d.prod!=null);
-  const xmin=1300,xmax=2450,ymin=0,ymax=150;
+  if(!data.length)return;
+  const xd=domainFor(Math.min(...data.map(d=>d.hours)),Math.max(...data.map(d=>d.hours)),5);
+  const yd=domainFor(0,Math.max(...data.map(d=>d.prod))*1.08,5);
+  const xmin=xd.lo,xmax=xd.hi,ymin=yd.lo,ymax=yd.hi;
   const X=v=>m.l+(v-xmin)/(xmax-xmin)*(W-m.l-m.r);
   const Y=v=>H-m.b-(v-ymin)/(ymax-ymin)*(H-m.t-m.b);
-  for(let gx=1400;gx<=2400;gx+=200){
+  for(const gx of xd.ticks){
     svg.appendChild(el("line",{x1:X(gx),y1:m.t,x2:X(gx),y2:H-m.b,class:"gl"}));
     const t=el("text",{x:X(gx),y:H-m.b+16,"text-anchor":"middle",class:"axis-t"});t.textContent=fmt(gx);svg.appendChild(t);
   }
-  for(let gy=0;gy<=150;gy+=25){
+  for(const gy of yd.ticks){
     svg.appendChild(el("line",{x1:m.l,y1:Y(gy),x2:W-m.r,y2:Y(gy),class:"gl"}));
     const t=el("text",{x:m.l-8,y:Y(gy)+4,"text-anchor":"end",class:"axis-t"});t.textContent="$"+gy;svg.appendChild(t);
   }
@@ -1051,7 +1102,7 @@ function init(){
   new MutationObserver(()=>renderAll()).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
 
   // Acordeón de análisis (expandir/colapsar con animación)
-  document.querySelectorAll("#acc .acc-h").forEach(h=>h.addEventListener("click",()=>{
+  document.querySelectorAll(".acc-h").forEach(h=>h.addEventListener("click",()=>{
     const card=h.parentElement, open=card.classList.toggle("open");
     h.setAttribute("aria-expanded",open);
   }));
