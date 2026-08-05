@@ -104,6 +104,14 @@
     border-radius:6px;padding:2px 8px;margin:2px 0}
   .prose ul{margin:4px 0 8px;padding-left:18px;font-size:13.5px;color:var(--ink2)}
   .prose li{margin:3px 0}
+  details.faq{border-bottom:1px solid var(--border);padding:2px 0}
+  details.faq summary{cursor:pointer;list-style:none;padding:11px 2px;font-size:14px;font-weight:600;
+    color:var(--ink);display:flex;justify-content:space-between;gap:12px;align-items:center}
+  details.faq summary::-webkit-details-marker{display:none}
+  details.faq summary::after{content:"+";color:var(--muted);font-weight:700;font-size:18px;flex:none}
+  details.faq[open] summary::after{content:"–"}
+  details.faq .a{font-size:13.5px;color:var(--ink2);padding:0 2px 12px;max-width:80ch}
+  details.faq .a a{font-weight:600}
   @media print{
     body{background:#fff;color:#000}
     .wrap{max-width:none;padding:0}
@@ -112,6 +120,8 @@
     .cards{break-inside:avoid}
     #tbl-wrap{display:block !important}
     #tbl-wrap[hidden]{display:block !important}
+    details.faq>*{display:block !important}
+    details.faq summary::after{content:"" !important}
     h1{font-size:26px}
     a{color:#000;text-decoration:none}
     .src-note::after{content:" · unimauro.github.io/productividad"}
@@ -268,6 +278,61 @@
         los días no laborables del sector público — lo que genera trámites y banca cerrados mientras la
         actividad privada continúa. Ver el detalle en la sección de feriados.</p>
     </div>
+  </section>
+
+  <section class="block" id="faq">
+    <h2>Preguntas frecuentes</h2>
+    <p class="desc">Para revisar cómo leer los datos y sus límites antes de sacar conclusiones.</p>
+
+    <details class="faq"><summary>¿Por qué Perú aparece con ~2.143 horas si sentimos que trabajamos muchísimo?</summary>
+      <div class="a">Es un promedio anual por trabajador que incluye subempleo, jornadas parciales y estacionalidad.
+        Además, las horas de Perú, Brasil y Argentina son estimación de la <b>Penn World Table</b> (no OCDE) y
+        <b>no son comparables 1:1</b> con la serie OECD del resto. Y algo que el número no captura: el
+        <b>tiempo de traslado</b> (en Lima ~1,33 h/día) no cuenta como horas trabajadas pero pesa igual sobre el día.</div>
+    </details>
+
+    <details class="faq"><summary>¿De dónde salen los datos y de qué año son?</summary>
+      <div class="a">Horas y PIB por hora: <b>OECD</b> (2023). Informalidad: <b>INEI</b> (Perú, 2023) e
+        <b>ILOSTAT</b>. Traslados: <b>IPE/BCRP</b> y Moovit/censos (2016-2024). Feriados: <b>gob.pe / El Peruano (PCM)</b>
+        y gobiernos oficiales (2025-2026). Todas las URLs están en el
+        <a href="https://github.com/unimauro/productividad">repositorio</a> y las notas en el pie de la página.</div>
+    </details>
+
+    <details class="faq"><summary>¿Por qué Estados Unidos no tiene tasa de informalidad?</summary>
+      <div class="a">La informalidad laboral se mide con el marco <b>ODS 8.3.1</b> de la OIT, pensado para economías
+        en desarrollo. EE.UU. no reporta bajo ese marco, así que aparece como <b>s/d</b> (sin dato) en vez de un 0
+        que sería engañoso.</div>
+    </details>
+
+    <details class="faq"><summary>El tiempo de traslado, ¿es por trayecto o por día?</summary>
+      <div class="a">Se muestra como <b>minutos por día (ida + vuelta), aproximado</b>. Las fuentes usan métricas y
+        años distintos (algunas miden un solo trayecto, otras el día completo), por lo que la comparación es
+        indicativa. La cifra de <b>Lima es la más firme</b> (IPE/BCRP): subió 57% entre 2010 y 2024 y supera 3 h/día
+        en distritos periféricos. Costa Rica quedó como s/d por falta de dato exacto.</div>
+    </details>
+
+    <details class="faq"><summary>¿Por qué la productividad de México o Chile puede diferir de otras fuentes?</summary>
+      <div class="a">La OECD revisó recientemente sus series (cambio de <i>vintage</i>) y los valores de México y Chile
+        cambiaron de forma notable. Se usó el dato <b>reproducible del API actual de la OECD</b> en US$ PPA corrientes;
+        con otra base o snapshot los niveles varían, pero el orden de magnitud (LatAm muy por debajo de USA/Europa) se mantiene.</div>
+    </details>
+
+    <details class="faq"><summary>¿Los feriados incluyen los regionales?</summary>
+      <div class="a">No. El conteo es de feriados <b>nacionales/federales</b>. Varios países (Alemania, España, Brasil,
+        EE.UU., México) suman feriados regionales o estatales que elevan el total local y no están contados aquí.
+        Para Perú se muestran además los <b>días no laborables</b> del sector público, que son el foco del debate.</div>
+    </details>
+
+    <details class="faq"><summary>¿Puedo descargar los datos o el análisis?</summary>
+      <div class="a">Sí. <b>Descargar datos (CSV)</b> baja la tabla completa; <b>Descargar análisis (PDF)</b> abre el
+        diálogo de impresión del navegador → elige "Guardar como PDF" para obtener el informe con gráficos y tabla.</div>
+    </details>
+
+    <details class="faq"><summary>¿Cómo reporto un error o propongo una mejora?</summary>
+      <div class="a">Abre un issue o pull request en el repositorio:
+        <a href="https://github.com/unimauro/productividad">github.com/unimauro/productividad</a>. Cada dato cita su fuente,
+        así que las correcciones son bienvenidas y trazables.</div>
+    </details>
   </section>
 
   <button class="tbl-toggle" id="tbl-toggle" aria-expanded="false">▸ Ver tabla de datos y fuentes</button>
