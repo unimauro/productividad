@@ -226,6 +226,8 @@
   footer{color:var(--muted);font-size:12px;margin-top:26px;max-width:75ch}
   a{color:var(--latam)}
   .hl{color:var(--peru);font-weight:700}
+  .badge-col{font-size:11px;font-weight:700;color:#fff;background:var(--latam);padding:3px 9px;
+    border-radius:999px;vertical-align:middle;margin-left:8px;white-space:nowrap}
   /* Chatbot */
   #bot-fab{position:fixed;right:18px;bottom:18px;z-index:40;border:none;cursor:pointer;
     background:var(--latam);color:#fff;font:inherit;font-size:14px;font-weight:600;
@@ -286,6 +288,7 @@
   <a href="#g-informalidad">Informalidad</a>
   <a href="#g-traslado">Traslado</a>
   <a href="#g-feriados">Feriados</a>
+  <a href="#g-tiempo">Tiempo comprometido</a>
   <a href="#analisis">Análisis</a>
   <a href="#faq">Preguntas frecuentes</a>
   <a href="#creditos">Créditos y apoyo</a>
@@ -354,6 +357,29 @@
     <div class="legend" id="legend-hol"></div>
     <div class="chartbox"><div class="tip" id="tip-h"></div><svg id="bar-holidays" viewBox="0 0 720 360" role="img" aria-label="Feriados por país"></svg></div>
     <div class="note" id="hol-note">Nota sobre el debate en Perú — en verificación.</div>
+  </section>
+
+  <section class="block" id="g-tiempo">
+    <button class="dl-chart" data-svg="tc-bar" data-name="tiempo-comprometido">⬇ PNG</button>
+    <h2>Tiempo comprometido con el trabajo <span class="badge-col">Subpanel · Alfredo Corillo</span></h2>
+    <p class="desc">Jornada laboral legal <b>más</b> horas de traslado (ida y vuelta) al año, y qué porción de las
+      horas de vigilia consume. Análisis y autoría de
+      <b><a href="https://github.com/camaradacori">Alfredo Corillo</a></b> (@camaradacori).
+      Fuentes: ENUT 2024 (INEI), Encuesta CAF 2016, OCDE.</p>
+    <div class="cards">
+      <div class="card"><div class="lbl">Máximo traslado anual</div><div class="val">366 h</div><div class="sub">🇵🇪 Perú · ≈ 8 semanas de jornada</div></div>
+      <div class="card"><div class="lbl">Traslado vs vacaciones</div><div class="val">3,5×</div><div class="sub">🇲🇽 México viaja 3,5× lo que descansa</div></div>
+      <div class="card"><div class="lbl">Referencia América Latina</div><div class="val">80 min</div><div class="sub">al día, ida y vuelta · CAF 2016</div></div>
+      <div class="card"><div class="lbl">Referencia altos ingresos</div><div class="val">25 min</div><div class="sub">al día · uso del tiempo OCDE</div></div>
+    </div>
+    <h3 style="font-size:15px;margin:16px 0 2px">Jornada + traslado al año, y % de la vigilia</h3>
+    <div class="chartbox"><div class="tip" id="tip-tc"></div><svg id="tc-bar" viewBox="0 0 720 290" role="img" aria-label="Tiempo comprometido por país"></svg></div>
+    <div class="note">🇵🇪 <b>Perú: el traslado lo empuja tres puestos hacia arriba.</b> Con 80 min diarios y 275 días
+      trabajados, acumula <b>366 horas anuales de traslado</b> (8 semanas de su jornada) — la cifra absoluta más
+      alta de los 8 países con dato. Sumado a la jornada, pasa del <b>5.º al 3.º puesto</b> en tiempo comprometido.</div>
+    <h3 style="font-size:15px;margin:18px 0 2px">Traslado dentro de Perú (min/día, ida y vuelta · ENUT 2024)</h3>
+    <p class="desc" style="margin:0 0 8px">El promedio nacional esconde la dispersión: en la periferia de Lima y Callao el traslado llega a <b>3 h/día</b>.</p>
+    <div class="chartbox"><div class="tip" id="tip-pe"></div><svg id="pe-traslado" viewBox="0 0 720 120" role="img" aria-label="Traslado dentro de Perú"></svg></div>
   </section>
 
   <section class="block" id="analisis">
@@ -600,7 +626,27 @@ const GROUPS = {
   ref:   {label:"Referentes OCDE",color:"var(--ref)"},
   mundo: {label:"Otros países",   color:"var(--muted)"},
 };
-const FLAG={PE:"🇵🇪",MX:"🇲🇽",CL:"🇨🇱",CO:"🇨🇴",CR:"🇨🇷",BR:"🇧🇷",AR:"🇦🇷",US:"🇺🇸",DE:"🇩🇪",NL:"🇳🇱"};
+const FLAG={PE:"🇵🇪",MX:"🇲🇽",CL:"🇨🇱",CO:"🇨🇴",CR:"🇨🇷",BR:"🇧🇷",AR:"🇦🇷",US:"🇺🇸",DE:"🇩🇪",NL:"🇳🇱",
+  UY:"🇺🇾",PY:"🇵🇾",PA:"🇵🇦",HN:"🇭🇳",EC:"🇪🇨",BO:"🇧🇴",GT:"🇬🇹",DO:"🇩🇴",SV:"🇸🇻",VE:"🇻🇪",
+  CN:"🇨🇳",IN:"🇮🇳",VN:"🇻🇳",ID:"🇮🇩",JP:"🇯🇵",TH:"🇹🇭",PH:"🇵🇭",MY:"🇲🇾",SG:"🇸🇬",TR:"🇹🇷",KR:"🇰🇷",
+  CH:"🇨🇭",RU:"🇷🇺",FR:"🇫🇷",GB:"🇬🇧",IT:"🇮🇹",PL:"🇵🇱",PT:"🇵🇹",SE:"🇸🇪",NO:"🇳🇴",ES:"🇪🇸",CA:"🇨🇦",AU:"🇦🇺"};
+// Subpanel de Alfredo Corillo — jornada legal + traslado (ida/vuelta) al año y % de la vigilia
+const TC=[
+  {code:"MX",name:"México",   total:2698,pct:46.2},
+  {code:"AR",name:"Argentina",total:2640,pct:45.2},
+  {code:"PE",name:"Perú",     total:2563,pct:43.9},
+  {code:"UY",name:"Uruguay",  total:2501,pct:42.8},
+  {code:"PY",name:"Paraguay", total:2499,pct:42.8},
+  {code:"BR",name:"Brasil",   total:2295,pct:39.3},
+  {code:"CO",name:"Colombia", total:2290,pct:39.2},
+  {code:"CL",name:"Chile",    total:2250,pct:38.5},
+];
+// Traslado dentro de Perú (min/día, ida y vuelta) — ENUT 2024 (INEI)
+const TRASLADO_PE=[
+  {name:"Promedio nacional",         min:80, note:"1,3 h/día"},
+  {name:"Lima Metropolitana",        min:102,note:"1,7 h/día"},
+  {name:"Periferia de Lima y Callao",min:180,note:"3,0 h/día",hi:true},
+];
 const srcHours=d=>d.hoursEst?"Penn World Table / OWID (est. 2023)":"OECD 2023";
 const srcProd=d=>d.prodEst?"Penn World Table / OWID (est.)"
   :((d.code==="MX"||d.code==="CL")?"OECD (revisión de vintage ⚠)":"OECD PDB 2023");
@@ -762,6 +808,40 @@ function renderHolidays(){
   });
 }
 
+/* ===== SUBPANEL ALFREDO: barras simples (valor + sublabel + tooltip) ===== */
+function renderSimpleBar(svgId,tipId,rows,fmtFn,srcTxt){
+  const svg=document.getElementById(svgId);if(!svg)return;svg.innerHTML="";addGradients(svg);
+  const W=720,m={t:12,r:118,b:20,l:172};
+  const rowH=34,H=m.t+m.b+rows.length*rowH;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const max=Math.max(...rows.map(d=>d.val))*1.06;
+  const X=v=>m.l+v/max*(W-m.l-m.r);
+  const tip=document.getElementById(tipId);
+  rows.forEach((d,i)=>{
+    const y=m.t+i*rowH,bh=Math.min(18,rowH-12),cy=y+(rowH-bh)/2;
+    const grp=d.hi?"peru":"latam";
+    const lb=el("text",{x:m.l-(d.code?30:12),y:y+rowH/2+4,"text-anchor":"end",class:"bar-lbl"});
+    lb.textContent=d.name;svg.appendChild(lb);
+    if(d.code&&FLAG[d.code]){const fg=el("text",{x:m.l-24,y:y+rowH/2+5});fg.setAttribute("font-size",15);
+      fg.textContent=FLAG[d.code];svg.appendChild(fg);}
+    const w=Math.max(2,X(d.val)-m.l);
+    svg.appendChild(el("rect",{x:m.l,y:cy,width:w,height:bh,rx:4,fill:gradOf(svg,grp)}));
+    const vl=el("text",{x:m.l+w+8,y:cy+bh/2,class:"bar-lbl"});vl.textContent=fmtFn(d.val);svg.appendChild(vl);
+    if(d.sub){const sb=el("text",{x:m.l+w+8,y:cy+bh/2+13,class:"axis-t"});sb.textContent=d.sub;svg.appendChild(sb);}
+    const hit=el("rect",{x:0,y,width:W,height:rowH,fill:"transparent",style:"cursor:pointer"});
+    hit.addEventListener("pointermove",ev=>showTip(tip,ev,d,[[d.metric||"Valor",fmtFn(d.val)]],srcTxt));
+    hit.addEventListener("pointerleave",()=>tip.style.opacity=0);
+    svg.appendChild(hit);
+  });
+}
+function renderSubpanel(){
+  renderSimpleBar("tc-bar","tip-tc",
+    TC.map(d=>({code:d.code,name:d.name,val:d.total,sub:d.pct+"% vigilia",metric:"Jornada+traslado",hi:d.code==="PE"})),
+    v=>fmt(v)+" h","Alfredo Corillo · jornada legal + traslado (ENUT 2024, CAF 2016)");
+  renderSimpleBar("pe-traslado","tip-pe",
+    TRASLADO_PE.map(d=>({name:d.name,val:d.min,sub:d.note,metric:"Traslado",hi:d.hi})),
+    v=>v+" min","INEI · ENUT 2024 (min/día, ida y vuelta)");
+}
+
 /* ===== TOOLTIP ===== */
 function showTip(tip,ev,d,rows,src){
   const box=tip.parentElement.getBoundingClientRect();
@@ -807,6 +887,7 @@ function renderAll(){
   renderBar("bar-informal","tip-i","informal","Informalidad",v=>v+"%");
   renderBar("bar-commute","tip-c","commute","Traslado",v=>v+" min");
   renderHolidays();
+  renderSubpanel();
 }
 function init(){
   renderLegends();renderAll();renderTable();
@@ -839,7 +920,7 @@ function init(){
     const a=byId[e.target.id];if(!a)return;
     if(e.isIntersecting){links.forEach(x=>x.classList.remove("active"));a.classList.add("active");}
   })},{rootMargin:"-45% 0px -50% 0px"});
-  ["g-productividad","g-informalidad","g-traslado","g-feriados","analisis","faq","creditos"]
+  ["g-productividad","g-informalidad","g-traslado","g-feriados","g-tiempo","analisis","faq","creditos"]
     .forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el);});
 
   // ----- Dark mode manual (persistente) -----
