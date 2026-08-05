@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="system-ui,-apple-system,Segoe UI,sans-serif">
+  <rect width="1200" height="630" fill="#f9f9f7"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#2a78d6"/>
+  <text x="72" y="112" fill="#898781" font-size="22" font-weight="600" letter-spacing="3">OBSERVATORIO PRODUCTIVIDAD · LATAM + USA</text>
+  <text x="70" y="215" fill="#0b0b0b" font-size="76" font-weight="700">Trabajar más horas</text>
+  <text x="70" y="300" fill="#0b0b0b" font-size="76" font-weight="700">no es producir más</text>
+  <text x="72" y="372" fill="#52514e" font-size="30" font-weight="400">Horas trabajadas vs productividad por país · Perú, LatAm y USA</text>
+  <text x="72" y="414" fill="#52514e" font-size="30" font-weight="400">Informalidad · traslados · feriados y días no laborables</text>
+
+  <!-- mini scatter motif -->
+  <g transform="translate(760,150)">
+    <rect x="0" y="0" width="368" height="300" rx="16" fill="#fcfcfb" stroke="rgba(11,11,11,0.10)"/>
+    <line x1="40" y1="20" x2="40" y2="260" stroke="#e1e0d9"/>
+    <line x1="40" y1="260" x2="344" y2="260" stroke="#c3c2b7"/>
+    <text x="40" y="288" fill="#898781" font-size="15">Horas →</text>
+    <circle cx="110" cy="90" r="9" fill="#1baf7a" stroke="#fcfcfb" stroke-width="3"/>
+    <circle cx="150" cy="110" r="9" fill="#1baf7a" stroke="#fcfcfb" stroke-width="3"/>
+    <circle cx="210" cy="140" r="9" fill="#eb6834" stroke="#fcfcfb" stroke-width="3"/>
+    <circle cx="250" cy="200" r="9" fill="#2a78d6" stroke="#fcfcfb" stroke-width="3"/>
+    <circle cx="300" cy="215" r="9" fill="#2a78d6" stroke="#fcfcfb" stroke-width="3"/>
+    <circle cx="290" cy="230" r="12" fill="none" stroke="#e34948" stroke-width="3" opacity="0.6"/>
+    <circle cx="290" cy="230" r="9" fill="#e34948" stroke="#fcfcfb" stroke-width="3"/>
+    <text x="255" y="252" fill="#e34948" font-size="17" font-weight="700">Perú</text>
+  </g>
+  <text x="72" y="560" fill="#898781" font-size="20">unimauro.github.io/productividad · Fuentes: OECD · ILOSTAT · INEI · Moovit · PCM</text>
+</svg>
