@@ -220,6 +220,10 @@
   #yape-modal img{max-width:230px;width:100%;border-radius:12px;margin:10px 0}
   #yape-modal .close{margin-top:8px;background:var(--latam);color:#fff;border:none;border-radius:10px;padding:9px 16px;font:inherit;font-weight:600;cursor:pointer}
   @media print{.support,.share,#yape-modal{display:none !important}}
+  .dl-chart{float:right;font:inherit;font-size:12px;font-weight:600;padding:5px 11px;border-radius:8px;
+    cursor:pointer;background:var(--plane);border:1px solid var(--border);color:var(--ink2);display:inline-flex;gap:5px;align-items:center}
+  .dl-chart:hover{border-color:var(--axis)}
+  @media print{.dl-chart{display:none !important}}
 </style>
 
 <div class="wrap">
@@ -251,6 +255,7 @@
   <div class="cards" id="cards"></div>
 
   <section class="block">
+    <button class="dl-chart" data-svg="scatter" data-name="horas-vs-productividad">⬇ PNG</button>
     <h2>Horas trabajadas vs productividad (PIB por hora)</h2>
     <p class="desc">Cada punto es un país. Eje horizontal: horas promedio al año por trabajador.
       Eje vertical: dólares de PIB generados por hora trabajada (PPA). Arriba-izquierda = pocas horas,
@@ -260,6 +265,7 @@
   </section>
 
   <section class="block">
+    <button class="dl-chart" data-svg="bar-informal" data-name="informalidad">⬇ PNG</button>
     <h2>Informalidad laboral</h2>
     <p class="desc">Porcentaje del empleo en condiciones informales. Un peso alto limita la
       productividad, la protección social y la recaudación.</p>
@@ -267,6 +273,7 @@
   </section>
 
   <section class="block">
+    <button class="dl-chart" data-svg="bar-commute" data-name="traslado-commute">⬇ PNG</button>
     <h2>Tiempo de traslado al trabajo (ciudad principal)</h2>
     <p class="desc">Minutos por día en desplazamiento (ida y vuelta) en transporte público.
       Las horas de viaje son horas de vida que no cuentan como trabajo ni como descanso.</p>
@@ -274,6 +281,7 @@
   </section>
 
   <section class="block">
+    <button class="dl-chart" data-svg="bar-holidays" data-name="feriados">⬇ PNG</button>
     <h2>Feriados y días no laborables al año</h2>
     <p class="desc">Feriados oficiales por país. En Perú se suman además los "días no laborables"
       decretados por el Gobierno — el foco del debate sobre su impacto en la productividad y en
@@ -771,6 +779,43 @@ init();
     try{await navigator.clipboard.writeText(url);this.textContent="✓ Enlace copiado";
       setTimeout(()=>this.textContent="🔗 Copiar enlace",1800);}catch(e){this.textContent="🔗 "+url;}
   });
+})();
+
+/* ===== DESCARGAR CADA GRÁFICO COMO PNG ===== */
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  const V=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  function downloadChart(svgId,name){
+    const src=document.getElementById(svgId);if(!src)return;
+    const vb=(src.getAttribute("viewBox")||"0 0 720 460").split(/\s+/).map(Number);
+    const W=vb[2],H=vb[3],footH=26,scale=2;
+    const clone=src.cloneNode(true);
+    clone.setAttribute("xmlns",NS);clone.setAttribute("width",W);clone.setAttribute("height",H);
+    const vars=["--surface","--plane","--ink","--ink2","--muted","--grid","--axis","--border","--latam","--usa","--ref","--peru","--warn"]
+      .map(n=>n+":"+V(n)).join(";");
+    const st=document.createElementNS(NS,"style");
+    st.textContent=`svg{${vars};font-family:system-ui,-apple-system,'Segoe UI',sans-serif}`+
+      `.axis-t{fill:${V("--muted")};font-size:11px}.axis-title{fill:${V("--ink2")};font-size:12px;font-weight:600}`+
+      `.gl{stroke:${V("--grid")};stroke-width:1}.baseline{stroke:${V("--axis")};stroke-width:1}`+
+      `.pt-lbl,.bar-lbl{fill:${V("--ink2")};font-size:11px;font-weight:600}`;
+    clone.insertBefore(st,clone.firstChild);
+    const str=new XMLSerializer().serializeToString(clone);
+    const img=new Image();
+    img.onload=function(){
+      const c=document.createElement("canvas");c.width=W*scale;c.height=(H+footH)*scale;
+      const g=c.getContext("2d");g.scale(scale,scale);
+      g.fillStyle=V("--surface");g.fillRect(0,0,W,H+footH);
+      g.drawImage(img,0,0,W,H);
+      g.fillStyle=V("--muted");g.font="12px system-ui,-apple-system,sans-serif";
+      g.fillText("Observatorio Productividad · unimauro.github.io/productividad",12,H+17);
+      c.toBlob(function(b){const a=document.createElement("a");a.href=URL.createObjectURL(b);
+        a.download="productividad_"+name+".png";a.click();URL.revokeObjectURL(a.href);});
+    };
+    img.onerror=function(){alert("No se pudo generar la imagen de este gráfico.");};
+    img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(str);
+  }
+  document.querySelectorAll(".dl-chart").forEach(b=>b.addEventListener("click",()=>
+    downloadChart(b.dataset.svg,b.dataset.name)));
 })();
 
 /* ===== CHATBOT (ai.tunky.net) ===== */
