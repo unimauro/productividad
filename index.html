@@ -136,6 +136,8 @@
   .acc-card.c-green{border-left-color:var(--ref);background:color-mix(in srgb,var(--ref) 6%,var(--surface))}
   .acc-card.c-amber{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 7%,var(--surface))}
   .acc-card.c-red{border-left-color:var(--peru);background:color-mix(in srgb,var(--peru) 6%,var(--surface))}
+  .acc-card.c-indigo{border-left-color:#4a3aa7;background:color-mix(in srgb,#4a3aa7 6%,var(--surface))}
+  .c-indigo .acc-tag{background:#4a3aa7}
   .acc-h{width:100%;display:flex;align-items:center;gap:11px;background:transparent;border:none;cursor:pointer;
     font:inherit;font-size:15px;font-weight:700;color:var(--ink);padding:15px 16px;text-align:left}
   .acc-h .acc-ic{font-size:18px;line-height:1}
@@ -286,6 +288,7 @@
   <a href="#top">Inicio</a>
   <a href="#g-productividad">Horas vs productividad</a>
   <a href="#g-informalidad">Informalidad</a>
+  <a href="#g-empresas">Grandes empresas</a>
   <a href="#g-traslado">Traslado</a>
   <a href="#g-feriados">Feriados</a>
   <a href="#g-tiempo">Tiempo comprometido</a>
@@ -302,9 +305,10 @@
       <span class="hl">Perú</span> enmarcado en América Latina frente a Estados Unidos y a economías
       de alta productividad. Suma capas de calidad de vida: informalidad, tiempo de traslado y
       feriados / días no laborables.</p>
-    <p class="src-note" id="src-note">Datos 2023 (traslados/feriados 2024-26). Horas y PIB/hora: <b>OECD</b>
-      (Perú, Brasil, Argentina: estimación Penn World Table). Informalidad: <b>INEI</b> / <b>ILOSTAT</b>.
-      Traslados: <b>IPE/BCRP</b>, Moovit, censos. Feriados: <b>gob.pe / El Peruano (PCM)</b> y gobiernos oficiales.</p>
+    <p class="src-note" id="src-note"><b>42 países</b>. Datos 2023 (traslados/feriados 2024-26). Horas y PIB/hora:
+      <b>OECD</b>; los no-OCDE (Perú y varios) usan estimación <b>Penn World Table</b> (no comparable 1:1).
+      Informalidad: <b>INEI</b> / <b>ILOSTAT</b>. Traslados: <b>IPE/BCRP</b>, Moovit, censos. Feriados: gob.pe / PCM
+      (LatAm) y <b>Nager.Date</b> (resto). Grandes empresas: <b>Fortune Global 500 (2024)</b>.</p>
     <div class="toolbar">
       <button class="btn" id="theme-btn" aria-label="Cambiar tema"><span id="theme-ic">🌙</span> <span id="theme-tx">Modo oscuro</span></button>
       <button class="btn" id="dl-csv">⬇️ Descargar datos (CSV)</button>
@@ -340,6 +344,19 @@
     <div class="chartbox"><div class="tip" id="tip-i"></div><svg id="bar-informal" viewBox="0 0 720 360" role="img" aria-label="Informalidad por país"></svg></div>
   </section>
 
+  <section class="block" id="g-empresas">
+    <button class="dl-chart" data-svg="bar-fg500" data-name="grandes-empresas-fortune500">⬇ PNG</button>
+    <h2>Grandes empresas (Fortune Global 500)</h2>
+    <p class="desc">Número de empresas del Fortune Global 500 (2024) con sede en cada país. Es un proxy del
+      tamaño del ecosistema corporativo: una economía con muchas grandes corporaciones concentra capital,
+      tecnología, cadenas de proveedores y empleo formal — condiciones que elevan el valor generado por hora.
+      Filtra por grupo para comparar regiones.</p>
+    <div class="chartbox"><div class="tip" id="tip-fg"></div><svg id="bar-fg500" viewBox="0 0 720 360" role="img" aria-label="Empresas Fortune Global 500 por país"></svg></div>
+    <div class="note">🇵🇪 <b>Perú y casi toda Sudamérica: 0 empresas.</b> En la región solo aparecen Brasil (7) y México (3).
+      En contraste, EE.UU. (139), China (128), Japón (40), Francia (30) y Alemania (29) concentran el grueso.
+      La falta de grandes empresas ancla es parte de por qué el valor por hora se queda atrás. Fuente: Fortune Global 500 (2024).</div>
+  </section>
+
   <section class="block" id="g-traslado">
     <button class="dl-chart" data-svg="bar-commute" data-name="traslado-commute">⬇ PNG</button>
     <h2>Tiempo de traslado al trabajo (ciudad principal)</h2>
@@ -353,7 +370,9 @@
     <h2>Feriados y días no laborables al año</h2>
     <p class="desc">Feriados oficiales por país. En Perú se suman además los "días no laborables"
       decretados por el Gobierno — el foco del debate sobre su impacto en la productividad y en
-      servicios esenciales (salud, banca, atención al ciudadano).</p>
+      servicios esenciales (salud, banca, atención al ciudadano). <b>Ojo:</b> LatAm y referentes usan
+      conteo legal nacional; el resto usa Nager.Date (nacional, excluye feriados subnacionales), así que
+      Suiza (4) o China (6) se ven bajos — no es comparable 1:1 entre esos dos grupos.</p>
     <div class="legend" id="legend-hol"></div>
     <div class="chartbox"><div class="tip" id="tip-h"></div><svg id="bar-holidays" viewBox="0 0 720 360" role="img" aria-label="Feriados por país"></svg></div>
     <div class="note" id="hol-note">Nota sobre el debate en Perú — en verificación.</div>
@@ -395,6 +414,20 @@
             Alemania y Países Bajos trabajan ~1.340-1.450 h/año y producen <b>~US$ 98 por hora</b>: cerca de la
             mitad de horas y el doble o más de valor por hora. Perú es el caso extremo: muchas horas, la
             productividad más baja de la muestra.</p>
+        </div></div></div>
+      </div>
+
+      <div class="acc-card c-indigo">
+        <button class="acc-h" aria-expanded="false"><span class="acc-ic">🏢</span>
+          <span>Grandes empresas y ecosistema</span><span class="acc-tag">Escala</span><span class="acc-x">▾</span></button>
+        <div class="acc-b"><div><div class="acc-in">
+          <p>Una empresa de miles de millones de dólares no genera valor sola: arrastra proveedores, servicios
+            especializados, I+D, formación y empleo formal de alta productividad. Por eso el número de grandes
+            corporaciones es un buen espejo de la capacidad de una economía para generar valor por hora.</p>
+          <p>En el Fortune Global 500 (2024), <b>EE.UU. tiene 139, China 128, Japón 40, Francia 30 y Alemania 29</b>.
+            En Sudamérica solo figuran <b>Brasil (7)</b> y <b>México (3)</b>; <b>Perú, Chile, Colombia y Argentina están en 0</b>.
+            La ausencia de grandes empresas ancla es parte de por qué el valor por hora se queda atrás
+            (<a href="#g-empresas">ver el gráfico</a>).</p>
         </div></div></div>
       </div>
 
@@ -603,22 +636,55 @@
    commute=min/día ciudad principal, holidays=feriados oficiales, extra=días no laborables (Perú),
    gdppc=PIB per cápita PPA. */
 const DATA = [
-  {name:"Perú",         code:"PE", group:"peru",  city:"Lima",          hours:2143, hoursEst:true, prod:11.97, prodEst:true, informal:71.1, commute:80,   holidays:16, extra:2, gdppc:17042},
-  {name:"México",       code:"MX", group:"latam", city:"Cd. de México", hours:2228, prod:38.66, informal:57.0, commute:134,  holidays:7,  extra:0, gdppc:25188},
-  {name:"Chile",        code:"CL", group:"latam", city:"Santiago",      hours:1953, prod:36.51, informal:27.4, commute:84,   holidays:19, extra:0, gdppc:33174},
-  {name:"Colombia",     code:"CO", group:"latam", city:"Bogotá",        hours:2253, prod:21.69, informal:56.5, commute:97,   holidays:18, extra:0, gdppc:21282},
-  {name:"Costa Rica",   code:"CR", group:"latam", city:"San José",      hours:2171, prod:32.78, informal:37.1, commute:null, holidays:12, extra:0, gdppc:29248},
-  {name:"Brasil",       code:"BR", group:"latam", city:"São Paulo",     hours:1994, hoursEst:true, prod:19.96, prodEst:true, informal:37.0, commute:167,  holidays:10, extra:0, gdppc:21193},
-  {name:"Argentina",    code:"AR", group:"latam", city:"Buenos Aires",  hours:1612, hoursEst:true, prod:33.82, prodEst:true, informal:50.5, commute:79,   holidays:15, extra:0, gdppc:30246},
-  {name:"Estados Unidos",code:"US",group:"usa",   city:"Nueva York",    hours:1805, prod:95.55, informal:null, commute:80,   holidays:11, extra:0, gdppc:82587},
-  {name:"Alemania",     code:"DE", group:"ref",   city:"Berlín",        hours:1339, prod:97.87, informal:4.0,  commute:80,   holidays:9,  extra:0, gdppc:72262},
-  {name:"Países Bajos", code:"NL", group:"ref",   city:"Ámsterdam",     hours:1447, prod:97.70, informal:5.0,  commute:64,   holidays:11, extra:0, gdppc:80392},
+  {name:"Noruega",       code:"NO", group:"ref",   hours:1391, prod:143.8, informal:2.0,  commute:null, holidays:12, extra:0, gdppc:107768, fg500:1},
+  {name:"Suiza",         code:"CH", group:"ref",   hours:1528, prod:103.0, informal:1.1,  commute:null, holidays:4,  extra:0, gdppc:93940,  fg500:11},
+  {name:"Alemania",      code:"DE", group:"ref",   hours:1339, prod:97.9,  informal:4.0,  commute:26,   holidays:9,  extra:0, gdppc:72262,  fg500:29},
+  {name:"Países Bajos",  code:"NL", group:"ref",   hours:1447, prod:97.7,  informal:5.0,  commute:32,   holidays:11, extra:0, gdppc:80392,  fg500:11},
+  {name:"Estados Unidos",code:"US", group:"usa",   hours:1805, prod:95.6,  informal:null, commute:27,   holidays:11, extra:0, gdppc:82587,  fg500:139},
+  {name:"Suecia",        code:"SE", group:"ref",   hours:1434, prod:92.0,  informal:3.7,  commute:null, holidays:16, extra:0, gdppc:68458,  fg500:1},
+  {name:"Francia",       code:"FR", group:"ref",   hours:1503, prod:91.2,  informal:3.8,  commute:null, holidays:11, extra:0, gdppc:60927,  fg500:30},
+  {name:"Australia",     code:"AU", group:"mundo", hours:1645, prod:85.6,  informal:null, commute:null, holidays:7,  extra:0, gdppc:72273,  fg500:6},
+  {name:"Reino Unido",   code:"GB", group:"mundo", hours:1524, prod:83.5,  informal:19.8, commute:null, holidays:5,  extra:0, gdppc:60787,  fg500:17},
+  {name:"Italia",        code:"IT", group:"mundo", hours:1709, prod:79.9,  informal:10.9, commute:null, holidays:12, extra:0, gdppc:60350,  fg500:6},
+  {name:"España",        code:"ES", group:"mundo", hours:1645, prod:76.1,  informal:3.9,  commute:62,   holidays:8,  extra:0, gdppc:55661,  fg500:9},
+  {name:"Canadá",        code:"CA", group:"mundo", hours:1694, prod:73.9,  informal:null, commute:null, holidays:8,  extra:0, gdppc:64962,  fg500:14},
+  {name:"Singapur",      code:"SG", group:"mundo", hours:2283, hoursEst:true, prod:65.9, prodEst:true, informal:null, commute:null, holidays:11, extra:0, gdppc:144728, fg500:2},
+  {name:"Japón",         code:"JP", group:"mundo", hours:1611, prod:59.2,  informal:null, commute:null, holidays:16, extra:0, gdppc:52726,  fg500:40},
+  {name:"Portugal",      code:"PT", group:"mundo", hours:1769, prod:58.0,  informal:5.3,  commute:null, holidays:14, extra:0, gdppc:49800,  fg500:0},
+  {name:"Polonia",       code:"PL", group:"mundo", hours:1807, prod:56.1,  informal:14.5, commute:null, holidays:14, extra:0, gdppc:48473,  fg500:1},
+  {name:"Corea del Sur", code:"KR", group:"mundo", hours:1872, prod:56.0,  informal:29.1, commute:69,   holidays:15, extra:0, gdppc:57430,  fg500:15},
+  {name:"Turquía",       code:"TR", group:"mundo", hours:1732, prod:54.2,  informal:26.6, commute:null, holidays:14, extra:0, gdppc:43196,  fg500:1},
+  {name:"Uruguay",       code:"UY", group:"latam", hours:1481, hoursEst:true, prod:38.7, prodEst:true, informal:31.8, commute:null, holidays:15, extra:0, gdppc:34546, fg500:0},
+  {name:"México",        code:"MX", group:"latam", hours:2228, prod:38.7,  informal:57.0, commute:134,  holidays:7,  extra:0, gdppc:25188,  fg500:3},
+  {name:"Rusia",         code:"RU", group:"mundo", hours:2087, hoursEst:true, prod:36.6, prodEst:true, informal:19.2, commute:null, holidays:13, extra:0, gdppc:44299, fg500:4},
+  {name:"Chile",         code:"CL", group:"latam", hours:1953, prod:36.5,  informal:27.4, commute:84,   holidays:19, extra:0, gdppc:33174,  fg500:0},
+  {name:"Argentina",     code:"AR", group:"latam", hours:1612, hoursEst:true, prod:33.8, prodEst:true, informal:50.5, commute:79,   holidays:15, extra:0, gdppc:30246, fg500:0},
+  {name:"Costa Rica",    code:"CR", group:"latam", hours:2171, prod:32.8,  informal:37.1, commute:null, holidays:12, extra:0, gdppc:29248,  fg500:0},
+  {name:"Malasia",       code:"MY", group:"mundo", hours:2308, hoursEst:true, prod:29.7, prodEst:true, informal:null, commute:null, holidays:null, extra:0, gdppc:36497, fg500:1},
+  {name:"Rep. Dominicana",code:"DO",group:"latam", hours:2072, hoursEst:true, prod:23.2, prodEst:true, informal:55.7, commute:null, holidays:13, extra:0, gdppc:25861, fg500:0},
+  {name:"Colombia",      code:"CO", group:"latam", hours:2253, prod:21.7,  informal:56.5, commute:97,   holidays:18, extra:0, gdppc:21282,  fg500:0},
+  {name:"Brasil",        code:"BR", group:"latam", hours:1994, hoursEst:true, prod:20.0, prodEst:true, informal:37.0, commute:167,  holidays:10, extra:0, gdppc:21193, fg500:7},
+  {name:"Tailandia",     code:"TH", group:"mundo", hours:2177, hoursEst:true, prod:19.0, prodEst:true, informal:63.2, commute:null, holidays:null, extra:0, gdppc:23598, fg500:1},
+  {name:"Ecuador",       code:"EC", group:"latam", hours:1594, hoursEst:true, prod:18.8, prodEst:true, informal:68.1, commute:null, holidays:11, extra:0, gdppc:15907, fg500:0},
+  {name:"China",         code:"CN", group:"mundo", hours:2328, hoursEst:true, prod:17.7, prodEst:true, informal:null, commute:null, holidays:6,  extra:0, gdppc:25200, fg500:128},
+  {name:"Paraguay",      code:"PY", group:"latam", hours:2123, hoursEst:true, prod:16.4, prodEst:true, informal:65.8, commute:null, holidays:12, extra:0, gdppc:17585, fg500:0},
+  {name:"Indonesia",     code:"ID", group:"mundo", hours:1958, hoursEst:true, prod:14.3, prodEst:true, informal:81.0, commute:null, holidays:8,  extra:0, gdppc:15428, fg500:2},
+  {name:"Guatemala",     code:"GT", group:"latam", hours:2151, hoursEst:true, prod:13.1, prodEst:true, informal:83.2, commute:null, holidays:13, extra:0, gdppc:13752, fg500:0},
+  {name:"Perú",          code:"PE", group:"peru",  hours:2143, hoursEst:true, prod:12.0, prodEst:true, informal:71.1, commute:80,   holidays:16, extra:2, gdppc:17042, fg500:0},
+  {name:"Filipinas",     code:"PH", group:"mundo", hours:2096, hoursEst:true, prod:11.7, prodEst:true, informal:null, commute:null, holidays:21, extra:0, gdppc:10995, fg500:0},
+  {name:"Vietnam",       code:"VN", group:"mundo", hours:2160, hoursEst:true, prod:11.0, prodEst:true, informal:67.0, commute:null, holidays:4,  extra:0, gdppc:15034, fg500:0},
+  {name:"Bolivia",       code:"BO", group:"latam", hours:1968, hoursEst:true, prod:9.1,  prodEst:true, informal:83.9, commute:null, holidays:12, extra:0, gdppc:12903, fg500:0},
+  {name:"India",         code:"IN", group:"mundo", hours:2383, hoursEst:true, prod:8.1,  prodEst:true, informal:87.2, commute:null, holidays:null, extra:0, gdppc:9853, fg500:9},
+  {name:"Panamá",        code:"PA", group:"latam", hours:null, prod:null, informal:56.1, commute:null, holidays:13, extra:0, gdppc:39846, fg500:0},
+  {name:"El Salvador",   code:"SV", group:"latam", hours:null, prod:null, informal:66.5, commute:null, holidays:null, extra:0, gdppc:12667, fg500:0},
+  {name:"Honduras",      code:"HN", group:"latam", hours:null, prod:null, informal:82.6, commute:null, holidays:11, extra:0, gdppc:7184,  fg500:0},
 ];
-/* Bases (2023, salvo commute/feriados 2024-26): horas y PIB/hora OECD; Perú/Brasil/Argentina
-   estimación Penn World Table (no comparables 1:1). Productividad en US$ PPA corrientes —
-   México y Chile marcados por revisión de vintage OECD. Informalidad INEI (Perú) / ILOSTAT;
-   USA no se mide bajo ODS 8.3.1. Traslado en min/día ida+vuelta aprox. (métricas y años
-   heterogéneos; Lima = IPE/BCRP, la cifra más firme). */
+/* 42 países. Horas y PIB/hora: OECD (miembros) o Penn World Table/OWID (hoursEst/prodEst=true, no-OCDE,
+   NO comparable 1:1). PIB/hora en US$ PPA; México y Chile con revisión de vintage OECD. Informalidad
+   INEI (Perú)/ILOSTAT (varios s/d). Commute min/día ida+vuelta aprox. (s/d en la mayoría de los nuevos).
+   Feriados: LatAm+referentes = conteo legal nacional; resto = Nager.Date 2025 (nacional, excluye
+   subnacionales, por eso Suiza=4/China=6). fg500 = empresas Fortune Global 500 (2024). extra = días no
+   laborables (solo Perú). */
 const GROUPS = {
   peru:  {label:"Perú",           color:"var(--peru)"},
   latam: {label:"América Latina", color:"var(--latam)"},
@@ -710,9 +776,8 @@ function renderCards(){
 function renderScatter(){
   const svg=document.getElementById("scatter");svg.innerHTML="";
   const W=720,H=460,m={t:20,r:24,b:52,l:60};
-  const data=visible();
-  const xs=DATA.map(d=>d.hours),ys=DATA.map(d=>d.prod);
-  const xmin=1200,xmax=2400, ymin=0,ymax=100;
+  const data=visible().filter(d=>d.hours!=null&&d.prod!=null);
+  const xmin=1300,xmax=2450, ymin=0,ymax=150;
   const X=v=>m.l+(v-xmin)/(xmax-xmin)*(W-m.l-m.r);
   const Y=v=>H-m.b-(v-ymin)/(ymax-ymin)*(H-m.t-m.b);
   // grid + ticks
@@ -720,7 +785,7 @@ function renderScatter(){
     svg.appendChild(el("line",{x1:X(gx),y1:m.t,x2:X(gx),y2:H-m.b,class:"gl"}));
     const t=el("text",{x:X(gx),y:H-m.b+16,"text-anchor":"middle",class:"axis-t"});t.textContent=fmt(gx);svg.appendChild(t);
   }
-  for(let gy=0;gy<=100;gy+=20){
+  for(let gy=0;gy<=150;gy+=25){
     svg.appendChild(el("line",{x1:m.l,y1:Y(gy),x2:W-m.r,y2:Y(gy),class:"gl"}));
     const t=el("text",{x:m.l-8,y:Y(gy)+4,"text-anchor":"end",class:"axis-t"});t.textContent="$"+gy;svg.appendChild(t);
   }
@@ -731,17 +796,20 @@ function renderScatter(){
   yt.textContent="↑ PIB por hora (US$ PPA)";svg.appendChild(yt);
   // points
   const tip=document.getElementById("tip-s");
+  const many=data.length>16;
+  const labelSet=many?["US","CN","IN","NO","DE","JP"]:["US","DE","MX","CO","NL"];
   data.forEach(d=>{
-    const cx=X(d.hours),cy=Y(d.prod),isP=d.group==="peru",R=isP?18:14;
+    const cx=X(d.hours),cy=Y(d.prod),isP=d.group==="peru";
+    const R=isP?(many?15:18):(many?10:14);
     if(isP)svg.appendChild(el("circle",{cx,cy,r:R+4,fill:"none",stroke:"var(--peru)","stroke-width":2.5,opacity:.5}));
     // círculo con anillo del color de grupo + bandera dentro
     svg.appendChild(el("circle",{cx,cy,r:R,fill:"var(--surface)",stroke:colorOf(d),"stroke-width":isP?3:2.5}));
     const fl=el("text",{x:cx,y:cy,"text-anchor":"middle","dominant-baseline":"central"});
-    fl.setAttribute("font-size",isP?26:20);fl.textContent=FLAG[d.code]||"";svg.appendChild(fl);
-    if(isP||["US","DE","MX","CO","NL"].includes(d.code)){
+    fl.setAttribute("font-size",isP?(many?21:26):(many?14:20));fl.textContent=FLAG[d.code]||"";svg.appendChild(fl);
+    if(isP||labelSet.includes(d.code)){
       const lb=el("text",{x:cx+R+6,y:cy+4,class:"pt-lbl"});lb.textContent=d.name;svg.appendChild(lb);
     }
-    const hit=el("circle",{cx,cy,r:Math.max(20,R+6),class:"pt-hit"});
+    const hit=el("circle",{cx,cy,r:Math.max(18,R+6),class:"pt-hit"});
     hit.addEventListener("pointermove",ev=>showTip(tip,ev,d,[
       ["Horas/año",fmt(d.hours)],["PIB/hora",money(d.prod)],
       ["Informalidad",d.informal!=null?d.informal+"%":"s/d"]],
@@ -781,7 +849,7 @@ function renderBar(svgId,tipId,key,unit,fmtFn){
 function renderHolidays(){
   const svg=document.getElementById("bar-holidays");svg.innerHTML="";addGradients(svg);
   const W=720,m={t:12,r:80,b:28,l:158};
-  const rows=[...visible()].sort((a,b)=>(b.holidays+b.extra)-(a.holidays+a.extra));
+  const rows=[...visible()].filter(d=>d.holidays!=null).sort((a,b)=>(b.holidays+b.extra)-(a.holidays+a.extra));
   const rowH=30,H=m.t+m.b+rows.length*rowH;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
   const max=Math.max(...DATA.map(d=>d.holidays+d.extra))*1.08;
   const X=v=>m.l+v/max*(W-m.l-m.r);
@@ -867,7 +935,7 @@ function renderLegends(){
 /* ===== TABLE ===== */
 function renderTable(){
   const cols=[["name","País"],["hours","Horas/año"],["prod","PIB/hora US$"],["informal","Informal %"],
-    ["commute","Traslado min/día"],["holidays","Feriados"],["extra","No laborables"],["gdppc","PIB pc PPA"]];
+    ["commute","Traslado min/día"],["holidays","Feriados"],["extra","No laborables"],["fg500","Fortune 500"],["gdppc","PIB pc PPA"]];
   let h="<table><thead><tr>"+cols.map(c=>`<th>${c[1]}</th>`).join("")+"</tr></thead><tbody>";
   DATA.forEach(d=>{
     h+=`<tr class="${d.group==='peru'?'is-peru':''}">`+cols.map(c=>{
@@ -886,6 +954,7 @@ function renderAll(){
   renderCards();renderScatter();
   renderBar("bar-informal","tip-i","informal","Informalidad",v=>v+"%");
   renderBar("bar-commute","tip-c","commute","Traslado",v=>v+" min");
+  renderBar("bar-fg500","tip-fg","fg500","Empresas FG500",v=>fmt(v));
   renderHolidays();
   renderSubpanel();
 }
@@ -920,7 +989,7 @@ function init(){
     const a=byId[e.target.id];if(!a)return;
     if(e.isIntersecting){links.forEach(x=>x.classList.remove("active"));a.classList.add("active");}
   })},{rootMargin:"-45% 0px -50% 0px"});
-  ["g-productividad","g-informalidad","g-traslado","g-feriados","g-tiempo","analisis","faq","creditos"]
+  ["g-productividad","g-informalidad","g-empresas","g-traslado","g-feriados","g-tiempo","analisis","faq","creditos"]
     .forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el);});
 
   // ----- Dark mode manual (persistente) -----
@@ -937,9 +1006,9 @@ function init(){
 
   // ----- Descargar CSV -----
   document.getElementById("dl-csv").addEventListener("click",()=>{
-    const cols=[["name","Pais"],["city","Ciudad"],["hours","Horas_anuales"],["prod","PIB_por_hora_USD_PPA"],
+    const cols=[["name","Pais"],["code","ISO2"],["group","Grupo"],["hours","Horas_anuales"],["prod","PIB_por_hora_USD_PPA"],
       ["informal","Informalidad_pct"],["commute","Traslado_min_dia"],["holidays","Feriados"],
-      ["extra","Dias_no_laborables"],["gdppc","PIB_pc_PPA_USD"]];
+      ["extra","Dias_no_laborables"],["fg500","Fortune_Global_500"],["gdppc","PIB_pc_PPA_USD"]];
     const esc=v=>{v=(v==null?"s/d":String(v)); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
     const csv=[cols.map(c=>c[1]).join(",")]
       .concat(DATA.map(d=>cols.map(c=>esc(d[c[0]])).join(","))).join("\n");
@@ -1020,10 +1089,10 @@ init();
     input=document.getElementById("bot-text");
   const hist=[]; let busy=false, greeted=false;
   function ctx(){
-    const rows=DATA.map(d=>`${d.name}: ${d.hours} h/año, US$${d.prod}/hora, informalidad ${d.informal!=null?d.informal+"%":"s/d"}, `+
-      `traslado ${d.commute!=null?d.commute+" min/día":"s/d"}, ${d.holidays}${d.extra?"+"+d.extra:""} feriados`).join("\n");
-    return "Datos del Observatorio Productividad (2023; Perú/Brasil/Argentina horas estimadas con Penn World Table; PIB por hora en US$ PPA):\n"+rows+
-      "\nContexto: en Lima el tiempo de traslado subió 57% entre 2010 y 2024 (IPE/BCRP). En Perú se debaten los días no laborables por su impacto en productividad y servicios esenciales. Yape y Plin son palanca de inclusión financiera y formalización.";
+    const rows=DATA.map(d=>`${d.name}: ${d.hours!=null?d.hours+" h/año":"s/d h"}, ${d.prod!=null?"US$"+d.prod+"/h":"s/d"}, `+
+      `informalidad ${d.informal!=null?d.informal+"%":"s/d"}, ${d.holidays!=null?d.holidays+" feriados":"s/d fer."}, Fortune500: ${d.fg500}`).join("\n");
+    return "Datos del Observatorio Productividad — 42 países (2023; Perú y no-OCDE con horas estimadas por Penn World Table; PIB por hora en US$ PPA; Fortune Global 500 = edición 2024):\n"+rows+
+      "\nContexto: en Lima el tiempo de traslado subió 57% entre 2010 y 2024 (IPE/BCRP), periferia hasta 3 h/día. En Perú se debaten los días no laborables. Yape y Plin son palanca de inclusión financiera. Perú y casi toda Sudamérica tienen 0 empresas Fortune Global 500 (Brasil 7, México 3; EE.UU. 139, China 128, Japón 40).";
   }
   const SECT={analisis:"analisis","análisis":"analisis",faq:"faq",preguntas:"faq",feriados:"g-feriados",
     productividad:"g-productividad",horas:"g-productividad",informalidad:"g-informalidad",

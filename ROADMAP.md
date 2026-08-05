@@ -21,10 +21,12 @@ Tablero vivo: https://unimauro.github.io/productividad/ · Repo: https://github.
 - **Chatbot IA** (ai.tunky.net) con enlaces `#sección` clicables.
 - **Sidebar** de navegación (fijo en escritorio, cajón en móvil) con sección activa.
 - Créditos + apoyo (Café / Yape / PayPal) + compartir en redes.
+- **42 países** en el dataset (OECD + Penn World Table), con Perú/LatAm/USA/referentes resaltados y "Otros países" en gris.
+- **Gráfico Fortune Global 500** + card de análisis "grandes empresas y ecosistema".
+- **Subpanel de Alfredo**: tiempo comprometido (jornada + traslado, % de vigilia) y traslado en Perú (ENUT 2024: nacional/Lima/periferia).
 
 ## 🚧 En progreso
-- **Más países**: China, India, Vietnam, Indonesia, Japón, Suiza, Rusia, Europa y más de LatAm (agente reuniendo data verificada). Grupo gris "Otros países" ya listo para no robar foco.
-- **Grandes empresas (Fortune Global 500)** por país — nuevo indicador (tesis: economías con muchas grandes corporaciones generan más valor por hora).
+- Subpanel "Feriados y tiempo libre" de Alfredo (primera versión ya integrada: tiempo comprometido + traslado ENUT 2024).
 
 ## 🗺️ Backlog / ideas
 - **Subpanel "Feriados y tiempo libre"** (Alfredo): comparar días de descanso vs horas efectivas de vida libre; ranking de tiempo libre real.
