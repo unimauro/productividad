@@ -92,6 +92,30 @@
   .chip{font:inherit;font-size:13px;padding:6px 12px;border-radius:999px;cursor:pointer;
     background:var(--surface);color:var(--ink2);border:1px solid var(--border)}
   .chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+  .btn{font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;background:var(--surface);color:var(--ink);border:1px solid var(--border)}
+  .btn:hover{border-color:var(--axis)}
+  .btn.primary{background:var(--latam);color:#fff;border-color:var(--latam)}
+  .prose h3{font-size:15px;font-weight:700;margin:16px 0 4px}
+  .prose p{font-size:13.5px;color:var(--ink2);margin:0 0 8px;max-width:78ch}
+  .prose .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;
+    text-transform:uppercase;color:var(--latam);background:color-mix(in srgb,var(--latam) 12%,transparent);
+    border-radius:6px;padding:2px 8px;margin:2px 0}
+  .prose ul{margin:4px 0 8px;padding-left:18px;font-size:13.5px;color:var(--ink2)}
+  .prose li{margin:3px 0}
+  @media print{
+    body{background:#fff;color:#000}
+    .wrap{max-width:none;padding:0}
+    .filters,.toolbar,.tbl-toggle,.chartbox .tip{display:none !important}
+    section.block,.card{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+    .cards{break-inside:avoid}
+    #tbl-wrap{display:block !important}
+    #tbl-wrap[hidden]{display:block !important}
+    h1{font-size:26px}
+    a{color:#000;text-decoration:none}
+    .src-note::after{content:" · unimauro.github.io/productividad"}
+  }
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0 8px}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
   .card .lbl{font-size:12px;color:var(--ink2);font-weight:600}
@@ -144,7 +168,14 @@
       <span class="hl">Perú</span> enmarcado en América Latina frente a Estados Unidos y a economías
       de alta productividad. Suma capas de calidad de vida: informalidad, tiempo de traslado y
       feriados / días no laborables.</p>
-    <p class="src-note" id="src-note">Fuentes: OECD, ILOSTAT, INEI, Moovit — <em>datos en verificación</em>.</p>
+    <p class="src-note" id="src-note">Datos 2023 (traslados/feriados 2024-26). Horas y PIB/hora: <b>OECD</b>
+      (Perú, Brasil, Argentina: estimación Penn World Table). Informalidad: <b>INEI</b> / <b>ILOSTAT</b>.
+      Traslados: <b>IPE/BCRP</b>, Moovit, censos. Feriados: <b>gob.pe / El Peruano (PCM)</b> y gobiernos oficiales.</p>
+    <div class="toolbar">
+      <button class="btn" id="theme-btn" aria-label="Cambiar tema"><span id="theme-ic">🌙</span> <span id="theme-tx">Modo oscuro</span></button>
+      <button class="btn" id="dl-csv">⬇️ Descargar datos (CSV)</button>
+      <button class="btn primary" id="dl-pdf">📄 Descargar análisis (PDF)</button>
+    </div>
   </header>
 
   <div class="filters" role="group" aria-label="Filtro por grupo de países">
@@ -190,14 +221,67 @@
     <div class="note" id="hol-note">Nota sobre el debate en Perú — en verificación.</div>
   </section>
 
+  <section class="block" id="analisis">
+    <h2>Análisis</h2>
+    <div class="prose">
+      <span class="tag">La paradoja</span>
+      <p>Los países que más horas trabajan no son los más productivos. México (2.228 h/año), Colombia
+        (2.253) y Perú (~2.143) encabezan las horas, pero generan entre <b>US$ 12 y 39 de PIB por hora</b>.
+        Alemania y Países Bajos trabajan ~1.340-1.450 h/año y producen <b>~US$ 98 por hora</b>: cerca de la
+        mitad de horas y el doble o más de valor por hora. Perú es el caso extremo: muchas horas, la
+        productividad más baja de la muestra.</p>
+
+      <h3>Informalidad y pagos digitales (Yape, Plin)</h3>
+      <span class="tag">Formalización</span>
+      <p>La baja productividad de Perú está atada a una informalidad de <b>~71%</b> del empleo (INEI 2023):
+        empresas pequeñas, sin acceso a crédito, tecnología ni escala. Frente a eso, las billeteras
+        digitales — <b>Yape</b> (BCP) y <b>Plin</b> — se han vuelto infraestructura cotidiana con decenas
+        de millones de usuarios, y son hoy una de las palancas más concretas de <b>inclusión financiera</b>:</p>
+      <ul>
+        <li>Dan historial transaccional a microempresas y trabajadores independientes antes invisibles para la banca.</li>
+        <li>Reducen el uso de efectivo, principal aliado de la economía informal.</li>
+        <li>Bajan la fricción del cobro para bodegas, mototaxis, mercados y ambulantes — el primer puente hacia formalizarse.</li>
+      </ul>
+      <p class="src-note">No sustituyen la formalización (un QR no emite comprobante ni paga impuestos por sí solo),
+        pero son el punto de entrada digital de millones de peruanos a la economía formal.</p>
+
+      <h3>Empleo y portales de trabajo</h3>
+      <span class="tag">Acceso al empleo</span>
+      <p>La otra cara es cómo se accede al trabajo. En un mercado con 7 de cada 10 empleos informales, buena
+        parte de la contratación ocurre por redes personales y no por canales formales. Portales de empleo
+        (públicos y privados) y plataformas gig son relevantes porque <b>formalizan el emparejamiento</b>
+        entre oferta y demanda laboral, transparentan salarios y dan trazabilidad — condición previa para
+        subir la productividad de la fuerza de trabajo.</p>
+
+      <h3>Transporte y calidad de vida</h3>
+      <span class="tag">Horas de vida</span>
+      <p>Las horas de traslado no cuentan como trabajo ni como descanso, pero se restan a ambos. En Lima el
+        tiempo diario de viaje al trabajo <b>subió 57% entre 2010 y 2024</b> (de 0,84 a 1,33 h/día según
+        IPE/BCRP), y en distritos periféricos supera las <b>3 horas diarias</b>. Es un impuesto invisible
+        sobre la productividad y el bienestar, ligado a un transporte público saturado e informal.</p>
+
+      <h3>Feriados y días no laborables</h3>
+      <span class="tag">El debate</span>
+      <p>Perú combina 16 feriados nacionales con días no laborables decretados por el Gobierno. El debate no
+        es solo cuántos días se descansa, sino la <b>asimetría</b>: los servicios esenciales (salud, banca,
+        energía, transporte, seguridad) deben seguir operando, y el sector privado no está obligado a acatar
+        los días no laborables del sector público — lo que genera trámites y banca cerrados mientras la
+        actividad privada continúa. Ver el detalle en la sección de feriados.</p>
+    </div>
+  </section>
+
   <button class="tbl-toggle" id="tbl-toggle" aria-expanded="false">▸ Ver tabla de datos y fuentes</button>
   <div id="tbl-wrap" hidden></div>
 
   <footer>
-    <p>Observatorio comparativo. Los datos provienen de fuentes oficiales e internacionales
-      (OECD, ILOSTAT, INEI, Moovit, PCM). Cada valor cita su fuente en la tabla. Los países no
-      OCDE (Perú, Brasil, Argentina) usan estimaciones de ILOSTAT / Conference Board donde OECD
-      no publica el dato; se indican como tales.</p>
+    <p><b>Notas metodológicas.</b> Horas y PIB por hora: OECD (año 2023). Perú, Brasil y Argentina no son
+      OCDE — sus horas y productividad son estimación de la Penn World Table (base distinta, no comparable
+      1:1). Productividad en US$ PPA corrientes; México y Chile tienen revisiones de vintage en OECD.
+      Informalidad: INEI (Perú, 71,1% 2023) e ILOSTAT; EE.UU. no se mide bajo el marco ODS 8.3.1 (s/d).
+      Traslados en min/día ida+vuelta aproximados, con métricas y años heterogéneos (Moovit, censos);
+      la cifra de Lima (IPE/BCRP) es la más firme. Feriados: nacionales/federales — varios países suman
+      feriados regionales no contados aquí.</p>
+    <p>Repositorio y fuentes completas: <a href="https://github.com/unimauro/productividad">github.com/unimauro/productividad</a></p>
   </footer>
 </div>
 
@@ -208,26 +292,37 @@
    commute=min/día ciudad principal, holidays=feriados oficiales, extra=días no laborables (Perú),
    gdppc=PIB per cápita PPA. */
 const DATA = [
-  {name:"Perú",        code:"PE", group:"peru",  city:"Lima",         hours:2100, prod:16,  informal:71, commute:150, holidays:16, extra:4, gdppc:15000},
-  {name:"México",      code:"MX", group:"latam", city:"Cd. de México",hours:2207, prod:22,  informal:55, commute:140, holidays:8,  extra:0, gdppc:22000},
-  {name:"Chile",       code:"CL", group:"latam", city:"Santiago",     hours:1963, prod:32,  informal:27, commute:100, holidays:16, extra:0, gdppc:29000},
-  {name:"Colombia",    code:"CO", group:"latam", city:"Bogotá",       hours:2405, prod:20,  informal:58, commute:120, holidays:18, extra:0, gdppc:19000},
-  {name:"Costa Rica",  code:"CR", group:"latam", city:"San José",     hours:2149, prod:26,  informal:40, commute:95,  holidays:11, extra:0, gdppc:25000},
-  {name:"Brasil",      code:"BR", group:"latam", city:"São Paulo",    hours:1700, prod:23,  informal:39, commute:130, holidays:12, extra:0, gdppc:18000},
-  {name:"Argentina",   code:"AR", group:"latam", city:"Buenos Aires", hours:1750, prod:30,  informal:49, commute:110, holidays:19, extra:0, gdppc:26000},
-  {name:"Estados Unidos",code:"US",group:"usa",  city:"Nueva York",   hours:1811, prod:74,  informal:19, commute:90,  holidays:11, extra:0, gdppc:80000},
-  {name:"Alemania",    code:"DE", group:"ref",   city:"Berlín",       hours:1341, prod:68,  informal:10, commute:80,  holidays:11, extra:0, gdppc:66000},
-  {name:"Países Bajos",code:"NL", group:"ref",   city:"Ámsterdam",    hours:1430, prod:73,  informal:9,  commute:75,  holidays:9,  extra:0, gdppc:73000},
+  {name:"Perú",         code:"PE", group:"peru",  city:"Lima",          hours:2143, hoursEst:true, prod:11.97, prodEst:true, informal:71.1, commute:80,   holidays:16, extra:2, gdppc:17042},
+  {name:"México",       code:"MX", group:"latam", city:"Cd. de México", hours:2228, prod:38.66, informal:57.0, commute:134,  holidays:7,  extra:0, gdppc:25188},
+  {name:"Chile",        code:"CL", group:"latam", city:"Santiago",      hours:1953, prod:36.51, informal:27.4, commute:84,   holidays:19, extra:0, gdppc:33174},
+  {name:"Colombia",     code:"CO", group:"latam", city:"Bogotá",        hours:2253, prod:21.69, informal:56.5, commute:97,   holidays:18, extra:0, gdppc:21282},
+  {name:"Costa Rica",   code:"CR", group:"latam", city:"San José",      hours:2171, prod:32.78, informal:37.1, commute:null, holidays:12, extra:0, gdppc:29248},
+  {name:"Brasil",       code:"BR", group:"latam", city:"São Paulo",     hours:1994, hoursEst:true, prod:19.96, prodEst:true, informal:37.0, commute:167,  holidays:10, extra:0, gdppc:21193},
+  {name:"Argentina",    code:"AR", group:"latam", city:"Buenos Aires",  hours:1612, hoursEst:true, prod:33.82, prodEst:true, informal:50.5, commute:79,   holidays:15, extra:0, gdppc:30246},
+  {name:"Estados Unidos",code:"US",group:"usa",   city:"Nueva York",    hours:1805, prod:95.55, informal:null, commute:80,   holidays:11, extra:0, gdppc:82587},
+  {name:"Alemania",     code:"DE", group:"ref",   city:"Berlín",        hours:1339, prod:97.87, informal:4.0,  commute:80,   holidays:9,  extra:0, gdppc:72262},
+  {name:"Países Bajos", code:"NL", group:"ref",   city:"Ámsterdam",     hours:1447, prod:97.70, informal:5.0,  commute:64,   holidays:11, extra:0, gdppc:80392},
 ];
+/* Bases (2023, salvo commute/feriados 2024-26): horas y PIB/hora OECD; Perú/Brasil/Argentina
+   estimación Penn World Table (no comparables 1:1). Productividad en US$ PPA corrientes —
+   México y Chile marcados por revisión de vintage OECD. Informalidad INEI (Perú) / ILOSTAT;
+   USA no se mide bajo ODS 8.3.1. Traslado en min/día ida+vuelta aprox. (métricas y años
+   heterogéneos; Lima = IPE/BCRP, la cifra más firme). */
 const GROUPS = {
   peru:  {label:"Perú",           color:"var(--peru)"},
   latam: {label:"América Latina", color:"var(--latam)"},
   usa:   {label:"Estados Unidos", color:"var(--usa)"},
   ref:   {label:"Referentes OCDE",color:"var(--ref)"},
 };
-const HOL_NOTE = "En Perú el debate es sobre los <b>días no laborables</b> decretados por el "+
-  "Gobierno, que se suman a los feriados y buscan impulsar el turismo, pero recargan servicios "+
-  "esenciales (salud, banca) y afectan la continuidad operativa. (Nota preliminar — en verificación.)";
+const HOL_NOTE = "Perú tiene <b>16 feriados nacionales</b> (2025-2026) y el Gobierno decreta además "+
+  "<b>días no laborables</b> para el sector público (2 en 2026: 2-ene y 27-jul), compensables y de "+
+  "adopción voluntaria en el sector privado. Gremios como la CCL advierten que cada día no laborable "+
+  "adicional resta productividad y ventas al sector formal; se cita al BCRP con que un feriado extra "+
+  "reduce el crecimiento del PBI en torno a <b>0,04 pp</b> (hasta ~0,08 pp si es feriado nacional pleno) "+
+  "el primer año. En contraparte, se argumenta que los \"puentes\" dinamizan turismo, hotelería y "+
+  "gastronomía. El punto sensible: los <b>servicios esenciales</b> (salud, banca, energía, transporte, "+
+  "seguridad) deben seguir operando, y la banca/trámites públicos cierran mientras el sector privado "+
+  "sigue abierto. Fuente: gob.pe/feriados, El Peruano (D.S. 042-2025-PCM, 075-2026-PCM), BCRP, CCL.";
 
 /* ===== STATE ===== */
 let filter = "all";
@@ -266,7 +361,7 @@ function renderScatter(){
   const W=720,H=460,m={t:20,r:24,b:52,l:60};
   const data=visible();
   const xs=DATA.map(d=>d.hours),ys=DATA.map(d=>d.prod);
-  const xmin=1200,xmax=2500, ymin=0,ymax=80;
+  const xmin=1200,xmax=2400, ymin=0,ymax=100;
   const X=v=>m.l+(v-xmin)/(xmax-xmin)*(W-m.l-m.r);
   const Y=v=>H-m.b-(v-ymin)/(ymax-ymin)*(H-m.t-m.b);
   // grid + ticks
@@ -274,7 +369,7 @@ function renderScatter(){
     svg.appendChild(el("line",{x1:X(gx),y1:m.t,x2:X(gx),y2:H-m.b,class:"gl"}));
     const t=el("text",{x:X(gx),y:H-m.b+16,"text-anchor":"middle",class:"axis-t"});t.textContent=fmt(gx);svg.appendChild(t);
   }
-  for(let gy=0;gy<=80;gy+=20){
+  for(let gy=0;gy<=100;gy+=20){
     svg.appendChild(el("line",{x1:m.l,y1:Y(gy),x2:W-m.r,y2:Y(gy),class:"gl"}));
     const t=el("text",{x:m.l-8,y:Y(gy)+4,"text-anchor":"end",class:"axis-t"});t.textContent="$"+gy;svg.appendChild(t);
   }
@@ -294,7 +389,8 @@ function renderScatter(){
     }
     const hit=el("circle",{cx,cy,r:16,class:"pt-hit"});
     hit.addEventListener("pointermove",ev=>showTip(tip,ev,d,[
-      ["Horas/año",fmt(d.hours)],["PIB/hora",money(d.prod)],["Informalidad",d.informal+"%"]]));
+      ["Horas/año",fmt(d.hours)],["PIB/hora",money(d.prod)],
+      ["Informalidad",d.informal!=null?d.informal+"%":"s/d"]]));
     hit.addEventListener("pointerleave",()=>tip.style.opacity=0);
     svg.appendChild(hit);
   });
@@ -303,8 +399,8 @@ function renderScatter(){
 /* ===== GENERIC BAR ===== */
 function renderBar(svgId,tipId,key,unit,fmtFn){
   const svg=document.getElementById(svgId);svg.innerHTML="";
-  const W=720,m={t:12,r:60,b:28,l:130};
-  const rows=[...visible()].sort((a,b)=>b[key]-a[key]);
+  const W=720,m={t:12,r:70,b:28,l:130};
+  const rows=[...visible()].filter(d=>d[key]!=null).sort((a,b)=>b[key]-a[key]);
   const rowH=30,H=m.t+m.b+rows.length*rowH;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
   const max=Math.max(...DATA.map(d=>d[key]))*1.05;
   const X=v=>m.l+v/max*(W-m.l-m.r);
@@ -381,7 +477,8 @@ function renderTable(){
   DATA.forEach(d=>{
     h+=`<tr class="${d.group==='peru'?'is-peru':''}">`+cols.map(c=>{
       let v=d[c[0]];
-      if(c[0]==="prod"||c[0]==="gdppc")v=money(v);
+      if(v==null)v="s/d";
+      else if(c[0]==="prod"||c[0]==="gdppc")v=money(v);
       else if(typeof v==="number")v=fmt(v);
       return `<td>${v}</td>`;}).join("")+"</tr>";
   });
@@ -408,6 +505,38 @@ function init(){
   tt.addEventListener("click",()=>{const open=tw.hidden;tw.hidden=!open;
     tt.setAttribute("aria-expanded",open);tt.textContent=(open?"▾":"▸")+" Ver tabla de datos y fuentes";});
   new MutationObserver(()=>renderAll()).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+  // ----- Dark mode manual (persistente) -----
+  const root=document.documentElement;
+  function isDark(){return root.dataset.theme==="dark" ||
+    (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);}
+  function paintThemeBtn(){document.getElementById("theme-ic").textContent=isDark()?"☀️":"🌙";
+    document.getElementById("theme-tx").textContent=isDark()?"Modo claro":"Modo oscuro";}
+  const saved=localStorage.getItem("tema"); if(saved)root.dataset.theme=saved;
+  paintThemeBtn();
+  document.getElementById("theme-btn").addEventListener("click",()=>{
+    const next=isDark()?"light":"dark"; root.dataset.theme=next;
+    localStorage.setItem("tema",next); paintThemeBtn();}); // MutationObserver re-renderiza
+
+  // ----- Descargar CSV -----
+  document.getElementById("dl-csv").addEventListener("click",()=>{
+    const cols=[["name","Pais"],["city","Ciudad"],["hours","Horas_anuales"],["prod","PIB_por_hora_USD_PPA"],
+      ["informal","Informalidad_pct"],["commute","Traslado_min_dia"],["holidays","Feriados"],
+      ["extra","Dias_no_laborables"],["gdppc","PIB_pc_PPA_USD"]];
+    const esc=v=>{v=(v==null?"s/d":String(v)); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+    const csv=[cols.map(c=>c[1]).join(",")]
+      .concat(DATA.map(d=>cols.map(c=>esc(d[c[0]])).join(","))).join("\n");
+    const blob=new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download="productividad_datos.csv";a.click();URL.revokeObjectURL(a.href);
+  });
+
+  // ----- Descargar PDF (imprimir → guardar como PDF) -----
+  document.getElementById("dl-pdf").addEventListener("click",()=>{
+    if(tw.hidden){tw.hidden=false;tt.setAttribute("aria-expanded","true");
+      tt.textContent="▾ Ver tabla de datos y fuentes";}
+    setTimeout(()=>window.print(),120);
+  });
 }
 init();
 </script>

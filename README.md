@@ -14,15 +14,23 @@ Unidos y economías de alta productividad. Suma capas de calidad de vida: **info
   y servicios esenciales.
 - Tarjetas con foco Perú, filtros por grupo, tabla de datos con fuentes y tema claro/oscuro.
 
-## Datos y fuentes
+## Datos y fuentes (verificados, 2023 salvo indicado)
 
-Fuentes oficiales e internacionales: **OECD** (horas anuales, PIB por hora), **ILOSTAT** e
-**INEI** (informalidad), **Moovit / estudios locales** (traslados), **PCM / El Peruano**
-(feriados y días no laborables). Los países fuera de la OCDE (Perú, Brasil, Argentina) usan
-estimaciones de ILOSTAT / Conference Board donde la OECD no publica el dato; se indican como tales.
+- **Horas anuales** y **PIB por hora (US$ PPA)** — OECD Productivity Database / Average annual hours.
+  Perú, Brasil y Argentina (no OCDE) = estimación **Penn World Table** (OWID); base distinta, no
+  comparable 1:1 con la serie OECD.
+- **Informalidad** — INEI (Perú, 71,1% 2023) e ILOSTAT (ODS 8.3.1). EE.UU. no se mide bajo ese marco (s/d).
+- **Traslados** — IPE/BCRP (Lima: +57% entre 2010 y 2024, de 0,84 a 1,33 h/día), Moovit y censos
+  (US Census, Destatis, CBS). Métricas y años heterogéneos → min/día ida+vuelta aproximado.
+- **Feriados y días no laborables** — gob.pe/feriados, El Peruano (D.S. 042-2025-PCM, 075-2026-PCM)
+  y gobiernos oficiales. El conteo es nacional/federal (varios países suman feriados regionales).
+- **Debate Perú** — CCL y BCRP (un feriado extra ~0,04 pp menos de crecimiento del PBI el primer año).
 
-> Nota: el dataset se mantiene en `index.html` (bloque `DATA`). Cada valor cita su fuente en la
-> tabla de la página.
+### Advertencias
+- Productividad en US$ PPA **corrientes**; México y Chile tienen revisiones de *vintage* en OECD.
+- Horas de países no OCDE son orden de magnitud (PWT), no comparables directamente con OECD.
+
+> El dataset vive en `index.html` (bloque `DATA`), con las notas metodológicas en el pie de la página.
 
 ## Uso
 
