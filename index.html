@@ -1,0 +1,366 @@
+<title>Productividad — Observatorio de Horas de Trabajo y Productividad</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    color-scheme: light;
+    --plane:#f9f9f7; --surface:#fcfcfb;
+    --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+    /* categorical: latam / usa / referentes */
+    --latam:#2a78d6; --usa:#eb6834; --ref:#1baf7a;
+    --peru:#e34948;          /* emphasis */
+    --good:#0ca30c; --warn:#eda100; --crit:#d03b3b;
+    --seq0:#cde2fb; --seq1:#86b6ef; --seq2:#3987e5; --seq3:#1c5cab;
+    --font: system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:where(:not([data-theme="light"])){
+      color-scheme: dark;
+      --plane:#0d0d0d; --surface:#1a1a19;
+      --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+      --latam:#3987e5; --usa:#d95926; --ref:#199e70; --peru:#e66767;
+      --seq0:#184f95; --seq1:#3987e5; --seq2:#86b6ef; --seq3:#cde2fb;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --plane:#0d0d0d; --surface:#1a1a19;
+    --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+    --latam:#3987e5; --usa:#d95926; --ref:#199e70; --peru:#e66767;
+    --seq0:#184f95; --seq1:#3987e5; --seq2:#86b6ef; --seq3:#cde2fb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--font);
+    line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+  header.top{margin-bottom:8px}
+  .kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  h1{font-size:clamp(24px,4vw,36px);line-height:1.15;margin:6px 0 8px;font-weight:700}
+  .lede{color:var(--ink2);max-width:70ch;font-size:15px}
+  .src-note{color:var(--muted);font-size:12.5px;margin-top:6px}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:22px 0 4px}
+  .filters .lbl{font-size:12.5px;color:var(--muted);font-weight:600;margin-right:2px}
+  .chip{font:inherit;font-size:13px;padding:6px 12px;border-radius:999px;cursor:pointer;
+    background:var(--surface);color:var(--ink2);border:1px solid var(--border)}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0 8px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+  .card .lbl{font-size:12px;color:var(--ink2);font-weight:600}
+  .card .val{font-size:clamp(22px,3.4vw,30px);font-weight:700;margin-top:4px;letter-spacing:-.01em}
+  .card .sub{font-size:12px;color:var(--muted);margin-top:2px}
+  section.block{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:18px 18px 12px;margin:18px 0}
+  section.block h2{font-size:18px;margin:0 0 2px;font-weight:700}
+  section.block .desc{color:var(--ink2);font-size:13.5px;margin:0 0 10px;max-width:75ch}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:2px 0 8px;font-size:12.5px;color:var(--ink2)}
+  .legend .it{display:inline-flex;align-items:center;gap:6px}
+  .legend .dot{width:11px;height:11px;border-radius:50%}
+  .legend .dot.peru{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--peru)}
+  .chartbox{position:relative;width:100%;overflow-x:auto}
+  svg{display:block;width:100%;height:auto;font-family:var(--font)}
+  .axis-t{fill:var(--muted);font-size:11px}
+  .axis-title{fill:var(--ink2);font-size:12px;font-weight:600}
+  .gl{stroke:var(--grid);stroke-width:1}
+  .baseline{stroke:var(--axis);stroke-width:1}
+  .pt-hit{fill:transparent;cursor:pointer}
+  .pt-lbl{fill:var(--ink2);font-size:11px;font-weight:600}
+  .bar-lbl{fill:var(--ink2);font-size:11px;font-weight:600}
+  .tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .08s;z-index:5;
+    background:var(--surface);border:1px solid var(--border);border-radius:9px;
+    padding:8px 10px;font-size:12px;box-shadow:0 6px 22px rgba(0,0,0,.14);min-width:150px}
+  .tip .t-name{color:var(--ink2);font-size:12px;font-weight:600;margin-bottom:4px}
+  .tip .t-row{display:flex;justify-content:space-between;gap:14px}
+  .tip .t-row .k{color:var(--muted)}
+  .tip .t-row .v{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
+  .tbl-toggle{background:none;border:none;color:var(--latam);font:inherit;font-size:13px;
+    font-weight:600;cursor:pointer;padding:6px 0;text-decoration:underline}
+  table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:6px}
+  th,td{text-align:right;padding:7px 8px;border-bottom:1px solid var(--border);
+    font-variant-numeric:tabular-nums;white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;font-variant-numeric:normal}
+  thead th{color:var(--muted);font-weight:600;border-bottom:1px solid var(--axis)}
+  tr.is-peru td{background:color-mix(in srgb,var(--peru) 10%,transparent);font-weight:600}
+  .note{font-size:12.5px;color:var(--ink2);background:color-mix(in srgb,var(--warn) 12%,transparent);
+    border:1px solid var(--border);border-left:3px solid var(--warn);border-radius:8px;padding:10px 12px;margin-top:10px}
+  footer{color:var(--muted);font-size:12px;margin-top:26px;max-width:75ch}
+  a{color:var(--latam)}
+  .hl{color:var(--peru);font-weight:700}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="kicker">Observatorio Productividad · América Latina + USA + referentes</div>
+    <h1>Productividad: trabajar más horas no es producir más</h1>
+    <p class="lede">Comparación entre horas trabajadas y productividad laboral por país, con
+      <span class="hl">Perú</span> enmarcado en América Latina frente a Estados Unidos y a economías
+      de alta productividad. Suma capas de calidad de vida: informalidad, tiempo de traslado y
+      feriados / días no laborables.</p>
+    <p class="src-note" id="src-note">Fuentes: OECD, ILOSTAT, INEI, Moovit — <em>datos en verificación</em>.</p>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filtro por grupo de países">
+    <span class="lbl">Ver:</span>
+    <button class="chip" data-f="all" aria-pressed="true">Todos</button>
+    <button class="chip" data-f="latam" aria-pressed="false">América Latina</button>
+    <button class="chip" data-f="ref" aria-pressed="false">Referentes OCDE</button>
+    <button class="chip" data-f="peru" aria-pressed="false">Solo Perú vs USA</button>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <section class="block">
+    <h2>Horas trabajadas vs productividad (PIB por hora)</h2>
+    <p class="desc">Cada punto es un país. Eje horizontal: horas promedio al año por trabajador.
+      Eje vertical: dólares de PIB generados por hora trabajada (PPA). Arriba-izquierda = pocas horas,
+      alta productividad. Abajo-derecha = muchas horas, baja productividad.</p>
+    <div class="legend" id="legend-scatter"></div>
+    <div class="chartbox"><div class="tip" id="tip-s"></div><svg id="scatter" viewBox="0 0 720 460" role="img" aria-label="Dispersión horas vs productividad"></svg></div>
+  </section>
+
+  <section class="block">
+    <h2>Informalidad laboral</h2>
+    <p class="desc">Porcentaje del empleo en condiciones informales. Un peso alto limita la
+      productividad, la protección social y la recaudación.</p>
+    <div class="chartbox"><div class="tip" id="tip-i"></div><svg id="bar-informal" viewBox="0 0 720 360" role="img" aria-label="Informalidad por país"></svg></div>
+  </section>
+
+  <section class="block">
+    <h2>Tiempo de traslado al trabajo (ciudad principal)</h2>
+    <p class="desc">Minutos por día en desplazamiento (ida y vuelta) en transporte público.
+      Las horas de viaje son horas de vida que no cuentan como trabajo ni como descanso.</p>
+    <div class="chartbox"><div class="tip" id="tip-c"></div><svg id="bar-commute" viewBox="0 0 720 360" role="img" aria-label="Tiempo de traslado por ciudad"></svg></div>
+  </section>
+
+  <section class="block">
+    <h2>Feriados y días no laborables al año</h2>
+    <p class="desc">Feriados oficiales por país. En Perú se suman además los "días no laborables"
+      decretados por el Gobierno — el foco del debate sobre su impacto en la productividad y en
+      servicios esenciales (salud, banca, atención al ciudadano).</p>
+    <div class="legend" id="legend-hol"></div>
+    <div class="chartbox"><div class="tip" id="tip-h"></div><svg id="bar-holidays" viewBox="0 0 720 360" role="img" aria-label="Feriados por país"></svg></div>
+    <div class="note" id="hol-note">Nota sobre el debate en Perú — en verificación.</div>
+  </section>
+
+  <button class="tbl-toggle" id="tbl-toggle" aria-expanded="false">▸ Ver tabla de datos y fuentes</button>
+  <div id="tbl-wrap" hidden></div>
+
+  <footer>
+    <p>Observatorio comparativo. Los datos provienen de fuentes oficiales e internacionales
+      (OECD, ILOSTAT, INEI, Moovit, PCM). Cada valor cita su fuente en la tabla. Los países no
+      OCDE (Perú, Brasil, Argentina) usan estimaciones de ILOSTAT / Conference Board donde OECD
+      no publica el dato; se indican como tales.</p>
+  </footer>
+</div>
+
+<script>
+/* ===== DATA ===== valores PRELIMINARES — reemplazar por dataset verificado del agente.
+   group: 'peru' | 'latam' | 'usa' | 'ref'
+   hours=horas anuales, prod=USD PIB/hora PPA, informal=% empleo informal,
+   commute=min/día ciudad principal, holidays=feriados oficiales, extra=días no laborables (Perú),
+   gdppc=PIB per cápita PPA. */
+const DATA = [
+  {name:"Perú",        code:"PE", group:"peru",  city:"Lima",         hours:2100, prod:16,  informal:71, commute:150, holidays:16, extra:4, gdppc:15000},
+  {name:"México",      code:"MX", group:"latam", city:"Cd. de México",hours:2207, prod:22,  informal:55, commute:140, holidays:8,  extra:0, gdppc:22000},
+  {name:"Chile",       code:"CL", group:"latam", city:"Santiago",     hours:1963, prod:32,  informal:27, commute:100, holidays:16, extra:0, gdppc:29000},
+  {name:"Colombia",    code:"CO", group:"latam", city:"Bogotá",       hours:2405, prod:20,  informal:58, commute:120, holidays:18, extra:0, gdppc:19000},
+  {name:"Costa Rica",  code:"CR", group:"latam", city:"San José",     hours:2149, prod:26,  informal:40, commute:95,  holidays:11, extra:0, gdppc:25000},
+  {name:"Brasil",      code:"BR", group:"latam", city:"São Paulo",    hours:1700, prod:23,  informal:39, commute:130, holidays:12, extra:0, gdppc:18000},
+  {name:"Argentina",   code:"AR", group:"latam", city:"Buenos Aires", hours:1750, prod:30,  informal:49, commute:110, holidays:19, extra:0, gdppc:26000},
+  {name:"Estados Unidos",code:"US",group:"usa",  city:"Nueva York",   hours:1811, prod:74,  informal:19, commute:90,  holidays:11, extra:0, gdppc:80000},
+  {name:"Alemania",    code:"DE", group:"ref",   city:"Berlín",       hours:1341, prod:68,  informal:10, commute:80,  holidays:11, extra:0, gdppc:66000},
+  {name:"Países Bajos",code:"NL", group:"ref",   city:"Ámsterdam",    hours:1430, prod:73,  informal:9,  commute:75,  holidays:9,  extra:0, gdppc:73000},
+];
+const GROUPS = {
+  peru:  {label:"Perú",           color:"var(--peru)"},
+  latam: {label:"América Latina", color:"var(--latam)"},
+  usa:   {label:"Estados Unidos", color:"var(--usa)"},
+  ref:   {label:"Referentes OCDE",color:"var(--ref)"},
+};
+const HOL_NOTE = "En Perú el debate es sobre los <b>días no laborables</b> decretados por el "+
+  "Gobierno, que se suman a los feriados y buscan impulsar el turismo, pero recargan servicios "+
+  "esenciales (salud, banca) y afectan la continuidad operativa. (Nota preliminar — en verificación.)";
+
+/* ===== STATE ===== */
+let filter = "all";
+const fmt = n => n.toLocaleString("es-PE");
+const money = n => "$"+n.toLocaleString("es-PE");
+function visible(){
+  if(filter==="all") return DATA;
+  if(filter==="peru") return DATA.filter(d=>d.group==="peru"||d.group==="usa");
+  if(filter==="latam")return DATA.filter(d=>d.group==="latam"||d.group==="peru");
+  if(filter==="ref")  return DATA.filter(d=>d.group==="ref"||d.group==="peru");
+  return DATA;
+}
+const SVGNS="http://www.w3.org/2000/svg";
+function el(tag,attrs){const e=document.createElementNS(SVGNS,tag);
+  for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+function colorOf(d){return GROUPS[d.group].color;}
+
+/* ===== CARDS (Perú focus) ===== */
+function renderCards(){
+  const p=DATA.find(d=>d.group==="peru");
+  const cards=[
+    {lbl:"Horas al año · Perú",val:fmt(p.hours),sub:"promedio por trabajador"},
+    {lbl:"PIB por hora · Perú",val:money(p.prod),sub:"vs "+money(DATA.find(d=>d.code==="US").prod)+" en USA"},
+    {lbl:"Informalidad · Perú",val:p.informal+"%",sub:"del empleo"},
+    {lbl:"Traslado · Lima",val:p.commute+" min",sub:"por día (ida y vuelta)"},
+    {lbl:"Feriados + no laborables",val:(p.holidays+p.extra),sub:p.holidays+" feriados + "+p.extra+" no laborables"},
+  ];
+  document.getElementById("cards").innerHTML = cards.map(c=>
+    `<div class="card"><div class="lbl">${c.lbl}</div><div class="val">${c.val}</div><div class="sub">${c.sub}</div></div>`
+  ).join("");
+}
+
+/* ===== SCATTER ===== */
+function renderScatter(){
+  const svg=document.getElementById("scatter");svg.innerHTML="";
+  const W=720,H=460,m={t:20,r:24,b:52,l:60};
+  const data=visible();
+  const xs=DATA.map(d=>d.hours),ys=DATA.map(d=>d.prod);
+  const xmin=1200,xmax=2500, ymin=0,ymax=80;
+  const X=v=>m.l+(v-xmin)/(xmax-xmin)*(W-m.l-m.r);
+  const Y=v=>H-m.b-(v-ymin)/(ymax-ymin)*(H-m.t-m.b);
+  // grid + ticks
+  for(let gx=1400;gx<=2400;gx+=200){
+    svg.appendChild(el("line",{x1:X(gx),y1:m.t,x2:X(gx),y2:H-m.b,class:"gl"}));
+    const t=el("text",{x:X(gx),y:H-m.b+16,"text-anchor":"middle",class:"axis-t"});t.textContent=fmt(gx);svg.appendChild(t);
+  }
+  for(let gy=0;gy<=80;gy+=20){
+    svg.appendChild(el("line",{x1:m.l,y1:Y(gy),x2:W-m.r,y2:Y(gy),class:"gl"}));
+    const t=el("text",{x:m.l-8,y:Y(gy)+4,"text-anchor":"end",class:"axis-t"});t.textContent="$"+gy;svg.appendChild(t);
+  }
+  svg.appendChild(el("line",{x1:m.l,y1:H-m.b,x2:W-m.r,y2:H-m.b,class:"baseline"}));
+  const xt=el("text",{x:(m.l+W-m.r)/2,y:H-8,"text-anchor":"middle",class:"axis-title"});
+  xt.textContent="Horas trabajadas al año →";svg.appendChild(xt);
+  const yt=el("text",{x:-((m.t+H-m.b)/2),y:16,"text-anchor":"middle",class:"axis-title",transform:"rotate(-90)"});
+  yt.textContent="↑ PIB por hora (US$ PPA)";svg.appendChild(yt);
+  // points
+  const tip=document.getElementById("tip-s");
+  data.forEach(d=>{
+    const cx=X(d.hours),cy=Y(d.prod),isP=d.group==="peru";
+    if(isP)svg.appendChild(el("circle",{cx,cy,r:9,fill:"none",stroke:"var(--peru)","stroke-width":2,opacity:.55}));
+    svg.appendChild(el("circle",{cx,cy,r:isP?6:5,fill:colorOf(d),stroke:"var(--surface)","stroke-width":2}));
+    if(isP||["US","DE","MX","CO"].includes(d.code)){
+      const lb=el("text",{x:cx+10,y:cy+4,class:"pt-lbl"});lb.textContent=d.name;svg.appendChild(lb);
+    }
+    const hit=el("circle",{cx,cy,r:16,class:"pt-hit"});
+    hit.addEventListener("pointermove",ev=>showTip(tip,ev,d,[
+      ["Horas/año",fmt(d.hours)],["PIB/hora",money(d.prod)],["Informalidad",d.informal+"%"]]));
+    hit.addEventListener("pointerleave",()=>tip.style.opacity=0);
+    svg.appendChild(hit);
+  });
+}
+
+/* ===== GENERIC BAR ===== */
+function renderBar(svgId,tipId,key,unit,fmtFn){
+  const svg=document.getElementById(svgId);svg.innerHTML="";
+  const W=720,m={t:12,r:60,b:28,l:130};
+  const rows=[...visible()].sort((a,b)=>b[key]-a[key]);
+  const rowH=30,H=m.t+m.b+rows.length*rowH;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const max=Math.max(...DATA.map(d=>d[key]))*1.05;
+  const X=v=>m.l+v/max*(W-m.l-m.r);
+  const tip=document.getElementById(tipId);
+  rows.forEach((d,i)=>{
+    const y=m.t+i*rowH, bh=Math.min(18,rowH-8), cy=y+(rowH-bh)/2;
+    const lb=el("text",{x:m.l-10,y:y+rowH/2+4,"text-anchor":"end",class:"bar-lbl"});
+    lb.textContent=d.name;svg.appendChild(lb);
+    const w=Math.max(2,X(d[key])-m.l);
+    svg.appendChild(el("rect",{x:m.l,y:cy,width:w,height:bh,rx:4,fill:colorOf(d)}));
+    const vl=el("text",{x:m.l+w+8,y:cy+bh/2+4,class:"bar-lbl"});vl.textContent=fmtFn(d[key]);svg.appendChild(vl);
+    const hit=el("rect",{x:m.l,y,width:W-m.l-m.r,height:rowH,fill:"transparent",style:"cursor:pointer"});
+    hit.addEventListener("pointermove",ev=>showTip(tip,ev,d,[[unit,fmtFn(d[key])]]));
+    hit.addEventListener("pointerleave",()=>tip.style.opacity=0);
+    svg.appendChild(hit);
+  });
+}
+
+/* ===== HOLIDAYS (stacked feriados + no laborables) ===== */
+function renderHolidays(){
+  const svg=document.getElementById("bar-holidays");svg.innerHTML="";
+  const W=720,m={t:12,r:70,b:28,l:130};
+  const rows=[...visible()].sort((a,b)=>(b.holidays+b.extra)-(a.holidays+a.extra));
+  const rowH=30,H=m.t+m.b+rows.length*rowH;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const max=Math.max(...DATA.map(d=>d.holidays+d.extra))*1.08;
+  const X=v=>m.l+v/max*(W-m.l-m.r);
+  const tip=document.getElementById("tip-h");
+  rows.forEach((d,i)=>{
+    const y=m.t+i*rowH, bh=Math.min(18,rowH-8), cy=y+(rowH-bh)/2;
+    const lb=el("text",{x:m.l-10,y:y+rowH/2+4,"text-anchor":"end",class:"bar-lbl"});
+    lb.textContent=d.name;svg.appendChild(lb);
+    const w1=Math.max(2,X(d.holidays)-m.l);
+    svg.appendChild(el("rect",{x:m.l,y:cy,width:w1,height:bh,rx:4,fill:colorOf(d)}));
+    if(d.extra>0){
+      const w2=X(d.holidays+d.extra)-X(d.holidays);
+      svg.appendChild(el("rect",{x:X(d.holidays)+2,y:cy,width:Math.max(2,w2-2),height:bh,rx:4,fill:"var(--warn)"}));
+    }
+    const vl=el("text",{x:X(d.holidays+d.extra)+8,y:cy+bh/2+4,class:"bar-lbl"});
+    vl.textContent=(d.holidays+d.extra)+(d.extra?` (${d.holidays}+${d.extra})`:"");svg.appendChild(vl);
+    const hit=el("rect",{x:m.l,y,width:W-m.l-m.r,height:rowH,fill:"transparent",style:"cursor:pointer"});
+    hit.addEventListener("pointermove",ev=>showTip(tip,ev,d,[
+      ["Feriados",d.holidays],["No laborables",d.extra],["Total",d.holidays+d.extra]]));
+    hit.addEventListener("pointerleave",()=>tip.style.opacity=0);
+    svg.appendChild(hit);
+  });
+}
+
+/* ===== TOOLTIP ===== */
+function showTip(tip,ev,d,rows){
+  const box=tip.parentElement.getBoundingClientRect();
+  let html=`<div class="t-name">${d.name}</div>`;
+  rows.forEach(r=>html+=`<div class="t-row"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`);
+  tip.innerHTML=html;
+  let x=ev.clientX-box.left+12, y=ev.clientY-box.top+12;
+  if(x+170>box.width)x=ev.clientX-box.left-170;
+  tip.style.left=x+"px";tip.style.top=y+"px";tip.style.opacity=1;
+}
+
+/* ===== LEGENDS ===== */
+function renderLegends(){
+  const ls=document.getElementById("legend-scatter");
+  ls.innerHTML=Object.entries(GROUPS).map(([k,g])=>
+    `<span class="it"><span class="dot ${k==='peru'?'peru':''}" style="background:${g.color}"></span>${g.label}</span>`).join("");
+  document.getElementById("legend-hol").innerHTML=
+    `<span class="it"><span class="dot" style="background:var(--latam)"></span>Feriados oficiales</span>`+
+    `<span class="it"><span class="dot" style="background:var(--warn)"></span>Días no laborables (Perú)</span>`;
+}
+
+/* ===== TABLE ===== */
+function renderTable(){
+  const cols=[["name","País"],["hours","Horas/año"],["prod","PIB/hora US$"],["informal","Informal %"],
+    ["commute","Traslado min/día"],["holidays","Feriados"],["extra","No laborables"],["gdppc","PIB pc PPA"]];
+  let h="<table><thead><tr>"+cols.map(c=>`<th>${c[1]}</th>`).join("")+"</tr></thead><tbody>";
+  DATA.forEach(d=>{
+    h+=`<tr class="${d.group==='peru'?'is-peru':''}">`+cols.map(c=>{
+      let v=d[c[0]];
+      if(c[0]==="prod"||c[0]==="gdppc")v=money(v);
+      else if(typeof v==="number")v=fmt(v);
+      return `<td>${v}</td>`;}).join("")+"</tr>";
+  });
+  h+="</tbody></table>";
+  document.getElementById("tbl-wrap").innerHTML=h;
+}
+
+/* ===== RENDER ALL ===== */
+function renderAll(){
+  renderCards();renderScatter();
+  renderBar("bar-informal","tip-i","informal","Informalidad",v=>v+"%");
+  renderBar("bar-commute","tip-c","commute","Traslado",v=>v+" min");
+  renderHolidays();
+}
+function init(){
+  renderLegends();renderAll();renderTable();
+  document.getElementById("hol-note").innerHTML=HOL_NOTE;
+  document.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
+    filter=b.dataset.f;
+    document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    renderAll();
+  }));
+  const tt=document.getElementById("tbl-toggle"),tw=document.getElementById("tbl-wrap");
+  tt.addEventListener("click",()=>{const open=tw.hidden;tw.hidden=!open;
+    tt.setAttribute("aria-expanded",open);tt.textContent=(open?"▾":"▸")+" Ver tabla de datos y fuentes";});
+  new MutationObserver(()=>renderAll()).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+}
+init();
+</script>
