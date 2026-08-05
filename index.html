@@ -176,6 +176,50 @@
   footer{color:var(--muted);font-size:12px;margin-top:26px;max-width:75ch}
   a{color:var(--latam)}
   .hl{color:var(--peru);font-weight:700}
+  /* Chatbot */
+  #bot-fab{position:fixed;right:18px;bottom:18px;z-index:40;border:none;cursor:pointer;
+    background:var(--latam);color:#fff;font:inherit;font-size:14px;font-weight:600;
+    padding:12px 16px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.25);display:flex;gap:8px;align-items:center}
+  #bot-panel{position:fixed;right:18px;bottom:18px;z-index:41;width:min(380px,calc(100vw - 24px));
+    height:min(560px,calc(100vh - 40px));display:flex;flex-direction:column;background:var(--surface);
+    border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3)}
+  .bot-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;
+    border-bottom:1px solid var(--border);background:var(--latam);color:#fff}
+  .bot-head .bot-sub{display:block;font-size:11px;opacity:.85;font-weight:400}
+  .bot-head button{background:rgba(255,255,255,.2);border:none;color:#fff;cursor:pointer;
+    width:26px;height:26px;border-radius:50%;font-size:13px}
+  .bot-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+  .bot-msg{max-width:86%;padding:9px 12px;border-radius:12px;font-size:13.5px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+  .bot-msg.user{align-self:flex-end;background:var(--latam);color:#fff;border-bottom-right-radius:4px}
+  .bot-msg.bot{align-self:flex-start;background:var(--plane);color:var(--ink);border:1px solid var(--border);border-bottom-left-radius:4px}
+  .bot-msg.err{align-self:center;background:color-mix(in srgb,var(--crit) 12%,transparent);color:var(--ink2);font-size:12.5px;text-align:center}
+  .bot-typing{align-self:flex-start;color:var(--muted);font-size:12.5px;padding:2px 10px}
+  .bot-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 8px}
+  .bot-chips button{font:inherit;font-size:11.5px;padding:5px 9px;border-radius:999px;cursor:pointer;
+    background:var(--plane);border:1px solid var(--border);color:var(--ink2)}
+  .bot-input{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}
+  .bot-input input{flex:1;font:inherit;font-size:13.5px;padding:9px 12px;border-radius:10px;
+    border:1px solid var(--border);background:var(--plane);color:var(--ink)}
+  .bot-input button{border:none;background:var(--latam);color:#fff;cursor:pointer;width:42px;border-radius:10px;font-size:15px}
+  .bot-disc{font-size:10px;color:var(--muted);text-align:center;padding:0 12px 8px}
+  @media print{#bot-fab,#bot-panel{display:none !important}}
+  /* Créditos y apoyo */
+  .credit{font-size:13px;color:var(--ink2)} .credit b{color:var(--ink)}
+  .support{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+  .support a,.support button{font:inherit;font-size:13px;font-weight:700;padding:9px 14px;border-radius:10px;
+    cursor:pointer;border:1px solid var(--border);display:inline-flex;gap:7px;align-items:center;text-decoration:none}
+  .s-coffee{background:#ffdd00;color:#1a1206;border-color:#e6c700}
+  .s-yape{background:#742384;color:#fff;border-color:#5e1c6b}
+  .s-paypal{background:#0070ba;color:#fff;border-color:#005e9c}
+  .share{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .share a,.share button{font:inherit;font-size:12.5px;font-weight:600;padding:8px 12px;border-radius:999px;
+    cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--ink2);text-decoration:none;display:inline-flex;gap:6px;align-items:center}
+  #yape-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:none;align-items:center;justify-content:center;padding:20px}
+  #yape-modal.on{display:flex}
+  #yape-modal .box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;max-width:320px;text-align:center}
+  #yape-modal img{max-width:230px;width:100%;border-radius:12px;margin:10px 0}
+  #yape-modal .close{margin-top:8px;background:var(--latam);color:#fff;border:none;border-radius:10px;padding:9px 16px;font:inherit;font-weight:600;cursor:pointer}
+  @media print{.support,.share,#yape-modal{display:none !important}}
 </style>
 
 <div class="wrap">
@@ -366,6 +410,25 @@
   <button class="tbl-toggle" id="tbl-toggle" aria-expanded="false">▸ Ver tabla de datos y fuentes</button>
   <div id="tbl-wrap" hidden></div>
 
+  <section class="block" id="creditos">
+    <h2>Créditos, apoyo y difusión</h2>
+    <p class="credit">Creado por <b><a href="https://unimauro.github.io/">Carlos Cárdenas Fernández</a></b>
+      (<a href="https://github.com/unimauro">@unimauro</a>), con datos de fuentes públicas. Código abierto en
+      <a href="https://github.com/unimauro/productividad">GitHub</a>. Si te sirve, apóyalo:</p>
+    <div class="support">
+      <a class="s-coffee" href="https://buymeacoffee.com/unimauro" target="_blank" rel="noopener">☕ Invítame un café</a>
+      <button class="s-yape" id="yape-btn">💜 Yápeame</button>
+      <a class="s-paypal" href="https://paypal.me/unimauro" target="_blank" rel="noopener">🅿️ PayPal</a>
+    </div>
+    <p class="credit" style="margin:12px 0 0">Compártelo en tus redes:</p>
+    <div class="share" id="share">
+      <a id="sh-x" target="_blank" rel="noopener">𝕏 Twitter/X</a>
+      <a id="sh-wa" target="_blank" rel="noopener">🟢 WhatsApp</a>
+      <a id="sh-in" target="_blank" rel="noopener">💼 LinkedIn</a>
+      <button id="sh-copy">🔗 Copiar enlace</button>
+    </div>
+  </section>
+
   <footer>
     <p><b>Notas metodológicas.</b> Horas y PIB por hora: OECD (año 2023). Perú, Brasil y Argentina no son
       OCDE — sus horas y productividad son estimación de la Penn World Table (base distinta, no comparable
@@ -376,6 +439,36 @@
       feriados regionales no contados aquí.</p>
     <p>Repositorio y fuentes completas: <a href="https://github.com/unimauro/productividad">github.com/unimauro/productividad</a></p>
   </footer>
+</div>
+
+<!-- Modal Yape -->
+<div id="yape-modal" role="dialog" aria-label="Apoyo con Yape">
+  <div class="box">
+    <h3 style="margin:0 0 4px">Apóyame con Yape 💜</h3>
+    <p class="credit" style="margin:0">Carlos Cárdenas Fernández</p>
+    <img src="https://raw.githubusercontent.com/unimauro/salariosperu/main/yape.png" alt="Código QR de Yape" onerror="this.style.display='none'">
+    <div><button class="close" id="yape-close">Cerrar</button></div>
+  </div>
+</div>
+
+<!-- Chatbot (ai.tunky.net) -->
+<button id="bot-fab" aria-label="Abrir asistente">💬 Pregúntale a los datos</button>
+<div id="bot-panel" hidden role="dialog" aria-label="Asistente del Observatorio Productividad">
+  <div class="bot-head">
+    <div><b>Asistente</b><span class="bot-sub">Observatorio Productividad · IA</span></div>
+    <button id="bot-close" aria-label="Cerrar">✕</button>
+  </div>
+  <div id="bot-msgs" class="bot-msgs"></div>
+  <div class="bot-chips" id="bot-chips">
+    <button>¿Por qué Perú produce poco por hora?</button>
+    <button>¿Qué país trabaja más horas?</button>
+    <button>¿Cuánto se viaja en Lima?</button>
+  </div>
+  <form id="bot-form" class="bot-input" autocomplete="off">
+    <input id="bot-text" type="text" placeholder="Ej: ¿por qué Perú produce menos por hora?" aria-label="Escribe tu pregunta">
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+  <div class="bot-disc">Respuestas generadas por IA sobre los datos del tablero.</div>
 </div>
 
 <script>
@@ -493,12 +586,12 @@ function renderScatter(){
   // points
   const tip=document.getElementById("tip-s");
   data.forEach(d=>{
-    const cx=X(d.hours),cy=Y(d.prod),isP=d.group==="peru",R=isP?14:11;
+    const cx=X(d.hours),cy=Y(d.prod),isP=d.group==="peru",R=isP?18:14;
     if(isP)svg.appendChild(el("circle",{cx,cy,r:R+4,fill:"none",stroke:"var(--peru)","stroke-width":2.5,opacity:.5}));
     // círculo con anillo del color de grupo + bandera dentro
     svg.appendChild(el("circle",{cx,cy,r:R,fill:"var(--surface)",stroke:colorOf(d),"stroke-width":isP?3:2.5}));
     const fl=el("text",{x:cx,y:cy,"text-anchor":"middle","dominant-baseline":"central"});
-    fl.setAttribute("font-size",isP?20:16);fl.textContent=FLAG[d.code]||"";svg.appendChild(fl);
+    fl.setAttribute("font-size",isP?26:20);fl.textContent=FLAG[d.code]||"";svg.appendChild(fl);
     if(isP||["US","DE","MX","CO","NL"].includes(d.code)){
       const lb=el("text",{x:cx+R+6,y:cy+4,class:"pt-lbl"});lb.textContent=d.name;svg.appendChild(lb);
     }
@@ -661,4 +754,63 @@ function init(){
   });
 }
 init();
+
+/* ===== CRÉDITOS: apoyo + compartir ===== */
+(function(){
+  const m=document.getElementById("yape-modal");
+  document.getElementById("yape-btn").addEventListener("click",()=>m.classList.add("on"));
+  document.getElementById("yape-close").addEventListener("click",()=>m.classList.remove("on"));
+  m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("on");});
+  const url="https://unimauro.github.io/productividad/";
+  const txt="Observatorio Productividad: trabajar más horas no es producir más. Perú, LatAm y USA en gráficos interactivos.";
+  const U=encodeURIComponent(url), T=encodeURIComponent(txt);
+  document.getElementById("sh-x").href="https://twitter.com/intent/tweet?text="+T+"&url="+U;
+  document.getElementById("sh-wa").href="https://wa.me/?text="+encodeURIComponent(txt+" "+url);
+  document.getElementById("sh-in").href="https://www.linkedin.com/sharing/share-offsite/?url="+U;
+  document.getElementById("sh-copy").addEventListener("click",async function(){
+    try{await navigator.clipboard.writeText(url);this.textContent="✓ Enlace copiado";
+      setTimeout(()=>this.textContent="🔗 Copiar enlace",1800);}catch(e){this.textContent="🔗 "+url;}
+  });
+})();
+
+/* ===== CHATBOT (ai.tunky.net) ===== */
+(function(){
+  const TOKEN="prdv_59b2b40db3033d9a36c6b6801495c14a", ENDPOINT="https://ai.tunky.net/v1/chat";
+  const fab=document.getElementById("bot-fab"),panel=document.getElementById("bot-panel"),
+    msgs=document.getElementById("bot-msgs"),form=document.getElementById("bot-form"),
+    input=document.getElementById("bot-text");
+  const hist=[]; let busy=false, greeted=false;
+  function ctx(){
+    const rows=DATA.map(d=>`${d.name}: ${d.hours} h/año, US$${d.prod}/hora, informalidad ${d.informal!=null?d.informal+"%":"s/d"}, `+
+      `traslado ${d.commute!=null?d.commute+" min/día":"s/d"}, ${d.holidays}${d.extra?"+"+d.extra:""} feriados`).join("\n");
+    return "Datos del Observatorio Productividad (2023; Perú/Brasil/Argentina horas estimadas con Penn World Table; PIB por hora en US$ PPA):\n"+rows+
+      "\nContexto: en Lima el tiempo de traslado subió 57% entre 2010 y 2024 (IPE/BCRP). En Perú se debaten los días no laborables por su impacto en productividad y servicios esenciales. Yape y Plin son palanca de inclusión financiera y formalización.";
+  }
+  function add(text,cls){const d=document.createElement("div");d.className="bot-msg "+cls;d.textContent=text;
+    msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d;}
+  function openBot(){panel.hidden=false;fab.style.display="none";input.focus();
+    if(!greeted){greeted=true;add("Hola 👋 Soy el asistente del Observatorio. Pregúntame sobre horas, productividad, informalidad, traslados o feriados de estos países.","bot");}}
+  function closeBot(){panel.hidden=true;fab.style.display="flex";}
+  fab.addEventListener("click",openBot);
+  document.getElementById("bot-close").addEventListener("click",closeBot);
+  document.querySelectorAll("#bot-chips button").forEach(b=>b.addEventListener("click",()=>{
+    input.value=b.textContent;form.requestSubmit();}));
+  form.addEventListener("submit",async e=>{
+    e.preventDefault();const q=input.value.trim();if(!q||busy)return;
+    input.value="";add(q,"user");hist.push({role:"user",content:q});busy=true;
+    const typing=document.createElement("div");typing.className="bot-typing";typing.textContent="escribiendo…";
+    msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;
+    try{
+      const payload=[{role:"user",content:ctx()}].concat(hist.slice(-6));
+      const r=await fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","X-Client-Token":TOKEN},
+        body:JSON.stringify({project:"productividad",messages:payload})});
+      typing.remove();
+      if(!r.ok){add(r.status===401?"El asistente aún no está activado para este sitio (falta darlo de alta en el gateway)."
+        :"No pude responder ahora (error "+r.status+"). Intenta de nuevo en un momento.","err");busy=false;return;}
+      const data=await r.json();const reply=(data&&data.reply)?data.reply:"(sin respuesta)";
+      add(reply,"bot");hist.push({role:"assistant",content:reply});
+    }catch(err){typing.remove();add("Sin conexión con el asistente. Revisa tu red e intenta de nuevo.","err");}
+    busy=false;
+  });
+})();
 </script>
