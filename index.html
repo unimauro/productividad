@@ -410,8 +410,10 @@
   <section class="block" id="g-traslado">
     <button class="dl-chart" data-svg="bar-commute" data-name="traslado-commute">⬇ PNG</button>
     <h2>Tiempo de traslado al trabajo (ciudad principal)</h2>
-    <p class="desc">Minutos por día en desplazamiento (ida y vuelta) en transporte público.
-      Las horas de viaje son horas de vida que no cuentan como trabajo ni como descanso.</p>
+    <p class="desc">Minutos por día en desplazamiento (ida y vuelta) en la ciudad principal. Las horas de
+      viaje son horas de vida que no cuentan como trabajo ni como descanso. <b>Ojo:</b> las fuentes no son
+      homogéneas (método, año 2013-2026, y algunas miden un trayecto que aquí se duplica para estimar el día);
+      úsalo como orden de magnitud. Lima (ENUT/IPE 2024) es de las cifras más firmes. Fuentes: Moovit, censos oficiales.</p>
     <div class="chartbox"><div class="tip" id="tip-c"></div><svg id="bar-commute" viewBox="0 0 720 360" role="img" aria-label="Tiempo de traslado por ciudad"></svg></div>
   </section>
 
@@ -744,6 +746,11 @@ const REGION={NO:"europa",CH:"europa",DE:"europa",NL:"europa",US:"norteamerica",
   MY:"asia",DO:"latam",CO:"latam",BR:"latam",TH:"asia",EC:"latam",CN:"asia",PY:"latam",ID:"asia",
   GT:"latam",PE:"peru",PH:"asia",VN:"asia",BO:"latam",IN:"asia",PA:"latam",SV:"latam",HN:"latam"};
 DATA.forEach(d=>{d.group=REGION[d.code]||d.group;});
+// Traslado min/día (ida+vuelta). Los one-way ya vienen ×2 aquí. s/d: RU, ID, GT, BO, HN.
+const COMMUTE={NO:52,CH:60,DE:62,NL:64,US:54,SE:63,FR:94,AU:71,GB:100,IT:108,ES:90,CA:60,SG:92,JP:102,
+  PT:40,PL:70,KR:69,TR:154,UY:91,MX:134,CL:84,AR:79,CR:124,MY:102,DO:180,CO:97,BR:167,TH:124,EC:154,
+  CN:92,PY:80,PE:80,PH:101,VN:64,IN:120,PA:104,SV:112};
+DATA.forEach(d=>{if(COMMUTE[d.code]!=null)d.commute=COMMUTE[d.code];});
 const GROUPS = {
   peru:         {label:"Perú",         color:"var(--peru)"},
   latam:        {label:"América Latina",color:"var(--latam)"},
