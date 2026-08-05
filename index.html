@@ -104,6 +104,33 @@
     border-radius:6px;padding:2px 8px;margin:2px 0}
   .prose ul{margin:4px 0 8px;padding-left:18px;font-size:13.5px;color:var(--ink2)}
   .prose li{margin:3px 0}
+  /* Acordeón de análisis (cards colapsables) */
+  .acc{display:grid;gap:12px;margin-top:4px}
+  .acc-card{border:1px solid var(--border);border-left-width:4px;border-radius:14px;overflow:hidden;
+    background:var(--surface);transition:border-color .2s}
+  .acc-card.c-blue{border-left-color:var(--latam);background:color-mix(in srgb,var(--latam) 5%,var(--surface))}
+  .acc-card.c-purple{border-left-color:#8b3fa8;background:color-mix(in srgb,#8b3fa8 6%,var(--surface))}
+  .acc-card.c-green{border-left-color:var(--ref);background:color-mix(in srgb,var(--ref) 6%,var(--surface))}
+  .acc-card.c-amber{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 7%,var(--surface))}
+  .acc-card.c-red{border-left-color:var(--peru);background:color-mix(in srgb,var(--peru) 6%,var(--surface))}
+  .acc-h{width:100%;display:flex;align-items:center;gap:11px;background:transparent;border:none;cursor:pointer;
+    font:inherit;font-size:15px;font-weight:700;color:var(--ink);padding:15px 16px;text-align:left}
+  .acc-h .acc-ic{font-size:18px;line-height:1}
+  .acc-h .acc-tag{font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+    padding:2px 8px;border-radius:6px;color:#fff;flex:none}
+  .c-blue .acc-tag{background:var(--latam)} .c-purple .acc-tag{background:#8b3fa8}
+  .c-green .acc-tag{background:var(--ref)} .c-amber .acc-tag{background:var(--warn);color:#3a2c00}
+  .c-red .acc-tag{background:var(--peru)}
+  .acc-h .acc-x{margin-left:auto;color:var(--muted);font-size:13px;transition:transform .3s ease}
+  .acc-card.open .acc-h .acc-x{transform:rotate(180deg)}
+  .acc-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+  .acc-card.open .acc-b{grid-template-rows:1fr}
+  .acc-b>div{overflow:hidden;min-height:0}
+  .acc-in{padding:0 16px 16px;font-size:13.5px;color:var(--ink2);line-height:1.55}
+  .acc-in p{margin:0 0 8px;max-width:80ch} .acc-in p:last-child{margin-bottom:0}
+  .acc-in ul{margin:6px 0;padding-left:18px} .acc-in li{margin:3px 0}
+  .acc-in b{color:var(--ink2);font-weight:700}
+  @media print{.acc-b{grid-template-rows:1fr !important}.acc-h .acc-x{display:none}}
   details.faq{border-bottom:1px solid var(--border);padding:2px 0}
   details.faq summary{cursor:pointer;list-style:none;padding:11px 2px;font-size:14px;font-weight:600;
     color:var(--ink);display:flex;justify-content:space-between;gap:12px;align-items:center}
@@ -293,50 +320,72 @@
 
   <section class="block" id="analisis">
     <h2>Análisis</h2>
-    <div class="prose">
-      <span class="tag">La paradoja</span>
-      <p>Los países que más horas trabajan no son los más productivos. México (2.228 h/año), Colombia
-        (2.253) y Perú (~2.143) encabezan las horas, pero generan entre <b>US$ 12 y 39 de PIB por hora</b>.
-        Alemania y Países Bajos trabajan ~1.340-1.450 h/año y producen <b>~US$ 98 por hora</b>: cerca de la
-        mitad de horas y el doble o más de valor por hora. Perú es el caso extremo: muchas horas, la
-        productividad más baja de la muestra.</p>
+    <p class="desc">Cinco lecturas de los datos. Toca cada tarjeta para expandirla.</p>
+    <div class="acc" id="acc">
+      <div class="acc-card c-blue open">
+        <button class="acc-h" aria-expanded="true"><span class="acc-ic">📉</span>
+          <span>La paradoja</span><span class="acc-tag">Productividad</span><span class="acc-x">▾</span></button>
+        <div class="acc-b"><div><div class="acc-in">
+          <p>Los países que más horas trabajan no son los más productivos. México (2.228 h/año), Colombia
+            (2.253) y Perú (~2.143) encabezan las horas, pero generan entre <b>US$ 12 y 39 de PIB por hora</b>.
+            Alemania y Países Bajos trabajan ~1.340-1.450 h/año y producen <b>~US$ 98 por hora</b>: cerca de la
+            mitad de horas y el doble o más de valor por hora. Perú es el caso extremo: muchas horas, la
+            productividad más baja de la muestra.</p>
+        </div></div></div>
+      </div>
 
-      <h3>Informalidad y pagos digitales (Yape, Plin)</h3>
-      <span class="tag">Formalización</span>
-      <p>La baja productividad de Perú está atada a una informalidad de <b>~71%</b> del empleo (INEI 2023):
-        empresas pequeñas, sin acceso a crédito, tecnología ni escala. Frente a eso, las billeteras
-        digitales — <b>Yape</b> (BCP) y <b>Plin</b> — se han vuelto infraestructura cotidiana con decenas
-        de millones de usuarios, y son hoy una de las palancas más concretas de <b>inclusión financiera</b>:</p>
-      <ul>
-        <li>Dan historial transaccional a microempresas y trabajadores independientes antes invisibles para la banca.</li>
-        <li>Reducen el uso de efectivo, principal aliado de la economía informal.</li>
-        <li>Bajan la fricción del cobro para bodegas, mototaxis, mercados y ambulantes — el primer puente hacia formalizarse.</li>
-      </ul>
-      <p class="src-note">No sustituyen la formalización (un QR no emite comprobante ni paga impuestos por sí solo),
-        pero son el punto de entrada digital de millones de peruanos a la economía formal.</p>
+      <div class="acc-card c-purple">
+        <button class="acc-h" aria-expanded="false"><span class="acc-ic">💜</span>
+          <span>Informalidad y pagos digitales (Yape, Plin)</span><span class="acc-tag">Formalización</span><span class="acc-x">▾</span></button>
+        <div class="acc-b"><div><div class="acc-in">
+          <p>La baja productividad de Perú está atada a una informalidad de <b>~71%</b> del empleo (INEI 2023):
+            empresas pequeñas, sin acceso a crédito, tecnología ni escala. Frente a eso, las billeteras
+            digitales — <b>Yape</b> (BCP) y <b>Plin</b> — se han vuelto infraestructura cotidiana con decenas
+            de millones de usuarios, y son hoy una de las palancas más concretas de <b>inclusión financiera</b>:</p>
+          <ul>
+            <li>Dan historial transaccional a microempresas y trabajadores independientes antes invisibles para la banca.</li>
+            <li>Reducen el uso de efectivo, principal aliado de la economía informal.</li>
+            <li>Bajan la fricción del cobro para bodegas, mototaxis, mercados y ambulantes — el primer puente hacia formalizarse.</li>
+          </ul>
+          <p>No sustituyen la formalización (un QR no emite comprobante ni paga impuestos por sí solo), pero
+            son el punto de entrada digital de millones de peruanos a la economía formal.</p>
+        </div></div></div>
+      </div>
 
-      <h3>Empleo y portales de trabajo</h3>
-      <span class="tag">Acceso al empleo</span>
-      <p>La otra cara es cómo se accede al trabajo. En un mercado con 7 de cada 10 empleos informales, buena
-        parte de la contratación ocurre por redes personales y no por canales formales. Portales de empleo
-        (públicos y privados) y plataformas gig son relevantes porque <b>formalizan el emparejamiento</b>
-        entre oferta y demanda laboral, transparentan salarios y dan trazabilidad — condición previa para
-        subir la productividad de la fuerza de trabajo.</p>
+      <div class="acc-card c-green">
+        <button class="acc-h" aria-expanded="false"><span class="acc-ic">💼</span>
+          <span>Empleo y portales de trabajo</span><span class="acc-tag">Acceso al empleo</span><span class="acc-x">▾</span></button>
+        <div class="acc-b"><div><div class="acc-in">
+          <p>La otra cara es cómo se accede al trabajo. En un mercado con 7 de cada 10 empleos informales, buena
+            parte de la contratación ocurre por redes personales y no por canales formales. Portales de empleo
+            (públicos y privados) y plataformas gig son relevantes porque <b>formalizan el emparejamiento</b>
+            entre oferta y demanda laboral, transparentan salarios y dan trazabilidad — condición previa para
+            subir la productividad de la fuerza de trabajo.</p>
+        </div></div></div>
+      </div>
 
-      <h3>Transporte y calidad de vida</h3>
-      <span class="tag">Horas de vida</span>
-      <p>Las horas de traslado no cuentan como trabajo ni como descanso, pero se restan a ambos. En Lima el
-        tiempo diario de viaje al trabajo <b>subió 57% entre 2010 y 2024</b> (de 0,84 a 1,33 h/día según
-        IPE/BCRP), y en distritos periféricos supera las <b>3 horas diarias</b>. Es un impuesto invisible
-        sobre la productividad y el bienestar, ligado a un transporte público saturado e informal.</p>
+      <div class="acc-card c-amber">
+        <button class="acc-h" aria-expanded="false"><span class="acc-ic">🚌</span>
+          <span>Transporte y calidad de vida</span><span class="acc-tag">Horas de vida</span><span class="acc-x">▾</span></button>
+        <div class="acc-b"><div><div class="acc-in">
+          <p>Las horas de traslado no cuentan como trabajo ni como descanso, pero se restan a ambos. En Lima el
+            tiempo diario de viaje al trabajo <b>subió 57% entre 2010 y 2024</b> (de 0,84 a 1,33 h/día según
+            IPE/BCRP), y en distritos periféricos supera las <b>3 horas diarias</b>. Es un impuesto invisible
+            sobre la productividad y el bienestar, ligado a un transporte público saturado e informal.</p>
+        </div></div></div>
+      </div>
 
-      <h3>Feriados y días no laborables</h3>
-      <span class="tag">El debate</span>
-      <p>Perú combina 16 feriados nacionales con días no laborables decretados por el Gobierno. El debate no
-        es solo cuántos días se descansa, sino la <b>asimetría</b>: los servicios esenciales (salud, banca,
-        energía, transporte, seguridad) deben seguir operando, y el sector privado no está obligado a acatar
-        los días no laborables del sector público — lo que genera trámites y banca cerrados mientras la
-        actividad privada continúa. Ver el detalle en la sección de feriados.</p>
+      <div class="acc-card c-red">
+        <button class="acc-h" aria-expanded="false"><span class="acc-ic">📅</span>
+          <span>Feriados y días no laborables</span><span class="acc-tag">El debate</span><span class="acc-x">▾</span></button>
+        <div class="acc-b"><div><div class="acc-in">
+          <p>Perú combina 16 feriados nacionales con días no laborables decretados por el Gobierno. El debate no
+            es solo cuántos días se descansa, sino la <b>asimetría</b>: los servicios esenciales (salud, banca,
+            energía, transporte, seguridad) deben seguir operando, y el sector privado no está obligado a acatar
+            los días no laborables del sector público — lo que genera trámites y banca cerrados mientras la
+            actividad privada continúa. Ver el detalle en la sección de feriados.</p>
+        </div></div></div>
+      </div>
     </div>
   </section>
 
@@ -507,6 +556,7 @@ const GROUPS = {
   latam: {label:"América Latina", color:"var(--latam)"},
   usa:   {label:"Estados Unidos", color:"var(--usa)"},
   ref:   {label:"Referentes OCDE",color:"var(--ref)"},
+  mundo: {label:"Otros países",   color:"var(--muted)"},
 };
 const FLAG={PE:"🇵🇪",MX:"🇲🇽",CL:"🇨🇱",CO:"🇨🇴",CR:"🇨🇷",BR:"🇧🇷",AR:"🇦🇷",US:"🇺🇸",DE:"🇩🇪",NL:"🇳🇱"};
 const srcHours=d=>d.hoursEst?"Penn World Table / OWID (est. 2023)":"OECD 2023";
@@ -728,6 +778,12 @@ function init(){
   tt.addEventListener("click",()=>{const open=tw.hidden;tw.hidden=!open;
     tt.setAttribute("aria-expanded",open);tt.textContent=(open?"▾":"▸")+" Ver tabla de datos y fuentes";});
   new MutationObserver(()=>renderAll()).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+  // Acordeón de análisis (expandir/colapsar con animación)
+  document.querySelectorAll("#acc .acc-h").forEach(h=>h.addEventListener("click",()=>{
+    const card=h.parentElement, open=card.classList.toggle("open");
+    h.setAttribute("aria-expanded",open);
+  }));
 
   // ----- Dark mode manual (persistente) -----
   const root=document.documentElement;
