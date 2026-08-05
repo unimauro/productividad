@@ -79,9 +79,32 @@
     --seq0:#184f95; --seq1:#3987e5; --seq2:#86b6ef; --seq3:#cde2fb;
   }
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--font);
     line-height:1.5;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+  section[id^="g-"],#analisis,#faq,#creditos{scroll-margin-top:16px}
+  /* Sidebar de navegación */
+  #sidebar{position:fixed;top:0;left:0;height:100vh;width:212px;z-index:35;overflow-y:auto;
+    background:var(--surface);border-right:1px solid var(--border);padding:20px 12px;
+    transform:translateX(-100%);transition:transform .28s ease}
+  #sidebar.open{transform:translateX(0)}
+  .nav-brand{font-size:14px;font-weight:700;color:var(--ink);padding:6px 12px 12px;display:flex;gap:8px;align-items:center}
+  #sidebar a{display:block;padding:9px 12px;border-radius:9px;color:var(--ink2);text-decoration:none;
+    font-size:13.5px;font-weight:600;margin:2px 0}
+  #sidebar a:hover{background:var(--plane);color:var(--ink)}
+  #sidebar a.active{background:color-mix(in srgb,var(--latam) 14%,transparent);color:var(--latam)}
+  #nav-toggle{position:fixed;top:14px;left:14px;z-index:37;width:42px;height:42px;border-radius:10px;
+    border:1px solid var(--border);background:var(--surface);color:var(--ink);font-size:19px;cursor:pointer;
+    box-shadow:0 2px 10px rgba(0,0,0,.12)}
+  #nav-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:34;opacity:0;pointer-events:none;transition:opacity .28s}
+  #nav-backdrop.on{opacity:1;pointer-events:auto}
+  @media(min-width:1200px){
+    #sidebar{transform:translateX(0)}
+    #nav-toggle,#nav-backdrop{display:none}
+    body{padding-left:212px}
+  }
+  @media print{#sidebar,#nav-toggle,#nav-backdrop{display:none !important}body{padding-left:0}}
   header.top{margin-bottom:8px}
   .kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
   h1{font-size:clamp(24px,4vw,36px);line-height:1.15;margin:6px 0 8px;font-weight:700}
@@ -219,6 +242,7 @@
   .bot-msg{max-width:86%;padding:9px 12px;border-radius:12px;font-size:13.5px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
   .bot-msg.user{align-self:flex-end;background:var(--latam);color:#fff;border-bottom-right-radius:4px}
   .bot-msg.bot{align-self:flex-start;background:var(--plane);color:var(--ink);border:1px solid var(--border);border-bottom-left-radius:4px}
+  .bot-msg.bot a{color:var(--latam);font-weight:700;text-decoration:underline;text-underline-offset:2px}
   .bot-msg.err{align-self:center;background:color-mix(in srgb,var(--crit) 12%,transparent);color:var(--ink2);font-size:12.5px;text-align:center}
   .bot-typing{align-self:flex-start;color:var(--muted);font-size:12.5px;padding:2px 10px}
   .bot-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 8px}
@@ -253,7 +277,21 @@
   @media print{.dl-chart{display:none !important}}
 </style>
 
-<div class="wrap">
+<button id="nav-toggle" aria-label="Abrir menú de navegación">☰</button>
+<div id="nav-backdrop"></div>
+<nav id="sidebar" aria-label="Navegación del observatorio">
+  <div class="nav-brand">📊 Productividad</div>
+  <a href="#top">Inicio</a>
+  <a href="#g-productividad">Horas vs productividad</a>
+  <a href="#g-informalidad">Informalidad</a>
+  <a href="#g-traslado">Traslado</a>
+  <a href="#g-feriados">Feriados</a>
+  <a href="#analisis">Análisis</a>
+  <a href="#faq">Preguntas frecuentes</a>
+  <a href="#creditos">Créditos y apoyo</a>
+</nav>
+
+<div class="wrap" id="top">
   <header class="top">
     <div class="kicker">Observatorio Productividad · América Latina + USA + referentes</div>
     <h1>Productividad: trabajar más horas no es producir más</h1>
@@ -281,7 +319,7 @@
 
   <div class="cards" id="cards"></div>
 
-  <section class="block">
+  <section class="block" id="g-productividad">
     <button class="dl-chart" data-svg="scatter" data-name="horas-vs-productividad">⬇ PNG</button>
     <h2>Horas trabajadas vs productividad (PIB por hora)</h2>
     <p class="desc">Cada punto es un país. Eje horizontal: horas promedio al año por trabajador.
@@ -291,7 +329,7 @@
     <div class="chartbox"><div class="tip" id="tip-s"></div><svg id="scatter" viewBox="0 0 720 460" role="img" aria-label="Dispersión horas vs productividad"></svg></div>
   </section>
 
-  <section class="block">
+  <section class="block" id="g-informalidad">
     <button class="dl-chart" data-svg="bar-informal" data-name="informalidad">⬇ PNG</button>
     <h2>Informalidad laboral</h2>
     <p class="desc">Porcentaje del empleo en condiciones informales. Un peso alto limita la
@@ -299,7 +337,7 @@
     <div class="chartbox"><div class="tip" id="tip-i"></div><svg id="bar-informal" viewBox="0 0 720 360" role="img" aria-label="Informalidad por país"></svg></div>
   </section>
 
-  <section class="block">
+  <section class="block" id="g-traslado">
     <button class="dl-chart" data-svg="bar-commute" data-name="traslado-commute">⬇ PNG</button>
     <h2>Tiempo de traslado al trabajo (ciudad principal)</h2>
     <p class="desc">Minutos por día en desplazamiento (ida y vuelta) en transporte público.
@@ -307,7 +345,7 @@
     <div class="chartbox"><div class="tip" id="tip-c"></div><svg id="bar-commute" viewBox="0 0 720 360" role="img" aria-label="Tiempo de traslado por ciudad"></svg></div>
   </section>
 
-  <section class="block">
+  <section class="block" id="g-feriados">
     <button class="dl-chart" data-svg="bar-holidays" data-name="feriados">⬇ PNG</button>
     <h2>Feriados y días no laborables al año</h2>
     <p class="desc">Feriados oficiales por país. En Perú se suman además los "días no laborables"
@@ -785,6 +823,21 @@ function init(){
     h.setAttribute("aria-expanded",open);
   }));
 
+  // Sidebar: cajón móvil + resaltado de sección activa
+  const sb=document.getElementById("sidebar"),bd=document.getElementById("nav-backdrop");
+  function navOpen(o){sb.classList.toggle("open",o);bd.classList.toggle("on",o);}
+  document.getElementById("nav-toggle").addEventListener("click",()=>navOpen(!sb.classList.contains("open")));
+  bd.addEventListener("click",()=>navOpen(false));
+  const links=[...document.querySelectorAll("#sidebar a")];
+  links.forEach(a=>a.addEventListener("click",()=>{if(window.innerWidth<1200)navOpen(false);}));
+  const byId={};links.forEach(a=>byId[a.getAttribute("href").slice(1)]=a);
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{
+    const a=byId[e.target.id];if(!a)return;
+    if(e.isIntersecting){links.forEach(x=>x.classList.remove("active"));a.classList.add("active");}
+  })},{rootMargin:"-45% 0px -50% 0px"});
+  ["g-productividad","g-informalidad","g-traslado","g-feriados","analisis","faq","creditos"]
+    .forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el);});
+
   // ----- Dark mode manual (persistente) -----
   const root=document.documentElement;
   function isDark(){return root.dataset.theme==="dark" ||
@@ -887,7 +940,23 @@ init();
     return "Datos del Observatorio Productividad (2023; Perú/Brasil/Argentina horas estimadas con Penn World Table; PIB por hora en US$ PPA):\n"+rows+
       "\nContexto: en Lima el tiempo de traslado subió 57% entre 2010 y 2024 (IPE/BCRP). En Perú se debaten los días no laborables por su impacto en productividad y servicios esenciales. Yape y Plin son palanca de inclusión financiera y formalización.";
   }
-  function add(text,cls){const d=document.createElement("div");d.className="bot-msg "+cls;d.textContent=text;
+  const SECT={analisis:"analisis","análisis":"analisis",faq:"faq",preguntas:"faq",feriados:"g-feriados",
+    productividad:"g-productividad",horas:"g-productividad",informalidad:"g-informalidad",
+    traslado:"g-traslado",commute:"g-traslado",transporte:"g-traslado",creditos:"creditos","créditos":"creditos",apoyo:"creditos",top:"top"};
+  function linkify(box,text){
+    const re=/#([a-zA-Z0-9áéíóúñ\-]+)/gi; let last=0,m;
+    while((m=re.exec(text))){
+      if(m.index>last)box.appendChild(document.createTextNode(text.slice(last,m.index)));
+      const key=m[1].toLowerCase().replace(/^g-/,"");
+      const tgt=SECT[key]||(document.getElementById(m[1])?m[1]:(document.getElementById("g-"+key)?"g-"+key:null));
+      if(tgt){const a=document.createElement("a");a.href="#"+tgt;a.textContent=m[0];box.appendChild(a);}
+      else box.appendChild(document.createTextNode(m[0]));
+      last=re.lastIndex;
+    }
+    if(last<text.length)box.appendChild(document.createTextNode(text.slice(last)));
+  }
+  function add(text,cls){const d=document.createElement("div");d.className="bot-msg "+cls;
+    if(cls==="bot")linkify(d,text);else d.textContent=text;
     msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d;}
   function openBot(){panel.hidden=false;fab.style.display="none";input.focus();
     if(!greeted){greeted=true;add("Hola 👋 Soy el asistente del Observatorio. Pregúntame sobre horas, productividad, informalidad, traslados o feriados de estos países.","bot");}}
