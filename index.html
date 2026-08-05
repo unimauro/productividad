@@ -524,10 +524,10 @@ function renderBar(svgId,tipId,key,unit,fmtFn){
   rows.forEach((d,i)=>{
     const y=m.t+i*rowH, bh=Math.min(18,rowH-8), cy=y+(rowH-bh)/2;
     // bandera antes del nombre
-    const fg=el("text",{x:8,y:y+rowH/2+5,class:"bar-lbl"});fg.setAttribute("font-size",15);
-    fg.textContent=FLAG[d.code]||"";svg.appendChild(fg);
-    const lb=el("text",{x:m.l-10,y:y+rowH/2+4,"text-anchor":"end",class:"bar-lbl"});
+    const lb=el("text",{x:m.l-30,y:y+rowH/2+4,"text-anchor":"end",class:"bar-lbl"});
     lb.textContent=d.name;svg.appendChild(lb);
+    const fg=el("text",{x:m.l-24,y:y+rowH/2+5});fg.setAttribute("font-size",15);
+    fg.textContent=FLAG[d.code]||"";svg.appendChild(fg);
     const w=Math.max(2,X(d[key])-m.l);
     svg.appendChild(el("rect",{x:m.l,y:cy,width:w,height:bh,rx:4,fill:gradOf(svg,d.group)}));
     const vl=el("text",{x:m.l+w+8,y:cy+bh/2+4,class:"bar-lbl"});vl.textContent=fmtFn(d[key]);svg.appendChild(vl);
@@ -549,10 +549,10 @@ function renderHolidays(){
   const tip=document.getElementById("tip-h");
   rows.forEach((d,i)=>{
     const y=m.t+i*rowH, bh=Math.min(18,rowH-8), cy=y+(rowH-bh)/2;
-    const fg=el("text",{x:8,y:y+rowH/2+5,class:"bar-lbl"});fg.setAttribute("font-size",15);
-    fg.textContent=FLAG[d.code]||"";svg.appendChild(fg);
-    const lb=el("text",{x:m.l-10,y:y+rowH/2+4,"text-anchor":"end",class:"bar-lbl"});
+    const lb=el("text",{x:m.l-30,y:y+rowH/2+4,"text-anchor":"end",class:"bar-lbl"});
     lb.textContent=d.name;svg.appendChild(lb);
+    const fg=el("text",{x:m.l-24,y:y+rowH/2+5});fg.setAttribute("font-size",15);
+    fg.textContent=FLAG[d.code]||"";svg.appendChild(fg);
     const w1=Math.max(2,X(d.holidays)-m.l);
     svg.appendChild(el("rect",{x:m.l,y:cy,width:w1,height:bh,rx:4,fill:gradOf(svg,d.group)}));
     if(d.extra>0){
