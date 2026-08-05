@@ -21,29 +21,36 @@ Tablero vivo: https://unimauro.github.io/productividad/ · Repo: https://github.
 - **Chatbot IA** (ai.tunky.net) con enlaces `#sección` clicables.
 - **Sidebar** de navegación (fijo en escritorio, cajón en móvil) con sección activa.
 - Créditos + apoyo (Café / Yape / PayPal) + compartir en redes.
-- **42 países** en el dataset (OECD + Penn World Table), con Perú/LatAm/USA/referentes resaltados y "Otros países" en gris.
-- **Gráfico Fortune Global 500** + card de análisis "grandes empresas y ecosistema".
-- **Subpanel de Alfredo**: tiempo comprometido (jornada + traslado, % de vigilia) y traslado en Perú (ENUT 2024: nacional/Lima/periferia).
+- **42 países** en el dataset (OECD + Penn World Table); coloreados por **región** (Perú, América Latina, Norteamérica, Europa, Asia, Oceanía) con Perú resaltado.
+- **Filtros por región dinámicos** (Todos / América Latina / Norteamérica / Europa / Asia / Perú vs USA) + **ejes que se auto-ajustan** al filtro (no queda todo aplastado abajo).
+- **Gráfico Fortune Global 500** (barras) + **gráfico de burbujas** (productividad × horas × nº de grandes empresas) + card de análisis "grandes empresas y ecosistema".
+- **Manifiesto/tesis con título en efecto de fuego** arriba (la baja productividad = falta de ambición/escala empresarial).
+- **Subpanel de Alfredo**: tiempo comprometido (jornada + traslado, % de vigilia, 8 países LatAm) y traslado en Perú (ENUT 2024: nacional/Lima/periferia).
+- **Traslado ampliado a 37/42 países** (Moovit + censos; one-way ×2 a día; caveat de heterogeneidad). s/d: RU, ID, GT, BO, HN.
+- Google Analytics (gtag `G-KESBHVEHTC`).
+- Fix: chatbot cierra con la X; textos a ancho completo; triángulo de acordeón grande con rebote.
 
-## 🚧 En progreso
-- Subpanel "Feriados y tiempo libre" de Alfredo (primera versión ya integrada: tiempo comprometido + traslado ENUT 2024).
+## 🚧 Pendiente para próxima sesión (prioridad)
+1. **Subpanel de Alfredo para más países**: llevar "jornada + traslado / % vigilia" más allá de los 8 LatAm (necesita jornada legal por país + commute; commute ya está para 37).
+2. **Top-N en barras largas**: informalidad (~30), feriados (~38), FG500 (42) y traslado (37) hacen la página muy alta. Mostrar top-N con "+N más" (sin ocultar a Perú; log de lo recortado).
+3. **Banderas SVG embebidas**: en Windows los emoji de bandera se ven como código ("PE"). Reemplazar por SVGs inline.
+4. **Normalizar commute**: elegir one-way vs día y mostrar año/método por barra (hoy mezcla 2013-2026 y algunas one-way ×2). Portugal: nacional INE (20 one-way) vs Numbeo Lisboa — decidir.
+5. **i18n ES/EN**.
 
 ## 🗺️ Backlog / ideas
-- **Subpanel "Feriados y tiempo libre"** (Alfredo): comparar días de descanso vs horas efectivas de vida libre; ranking de tiempo libre real.
-- **"Horas de vida"**: métrica de horas semanales/mensuales fuera de trabajo + traslado. En Lima el viaje llega a 3-4 h/día en los conos → ~60 h/mes solo en transporte. Mensaje: "trabajar y dormir".
-- Nuevo gráfico Fortune Global 500 + card de análisis "ecosistema de grandes empresas".
-- Sumar España y Corea del Sur (data ya reunida).
+- **Subpanel "Feriados y tiempo libre"** (Alfredo): ranking de tiempo libre real (días de descanso vs horas de vida libre).
+- **"Horas de vida"**: horas semanales/mensuales fuera de trabajo + traslado (Lima: hasta ~60 h/mes solo en transporte → "trabajar y dormir").
 - Toggle de año (2023 vs 2024) donde haya serie.
 - Elegir una sola base de productividad (PPA corriente vs volumen) y documentarla.
-- Mejorar commute: separar "por trayecto" vs "por día" y citar año por celda.
-- Banderas SVG embebidas (para que se vean también en Windows, no como "PE").
-- i18n ES/EN.
-- Compartir imagen del scatter con la posición de Perú resaltada (para redes).
+- Compartir imagen del scatter/burbujas con Perú resaltado (para redes).
+- Banner de consentimiento de cookies (por GA, si se busca cumplimiento GDPR/UE).
 
 ## 🐞 Notas / deuda técnica
 - Emoji de banderas: en Windows se ven como código de país ("PE") — pendiente banderas SVG.
 - Productividad de México/Chile: revisión de vintage OECD (marcado en la tabla).
 - Informalidad de EE.UU.: no se mide bajo ODS 8.3.1 (s/d).
+- Commute: 5 países en s/d (RU, ID, GT, BO, HN); métricas/años heterogéneos.
+- Feriados: LatAm = conteo legal nacional; resto = Nager.Date (nacional) → no comparable 1:1 entre ambos grupos.
 
 ---
 
